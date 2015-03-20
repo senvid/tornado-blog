@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block body %}
+	{% for entry in entries %}
+	<article class="article">
+		{% module Entry(entry) %}
+	</article>
+	{% end %}
+	<input id ="sumPage" type="hidden" value={{ sumPage }} />
+    <div id="entry_list">
+    </div>
+{% end %}
+
+{% block bottom %}
+<script type="text/javascript">
+	$(document).ready(function(){
+		var onPage;
+		if (!onPage) onPage=1;
+		var sumPage = parseInt($("#sumPage").val());
+		AreaBuild(onPage,sumPage);
+
+		$("#entry_list").on("click","a",function(){
+			var pageNum = parseInt($(this).text());
+			onPage = pageNum;
+			var send_data = $.param({ page_num:pageNum});
+			queryPageNum(pageNum,send_data,sumPage,onPage);
+		});
+	});
+</script>
+{% end %}

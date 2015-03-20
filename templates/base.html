@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+   <meta name="renderer" content="webkit" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html" /> 
+    <title>{{ escape(handler.settings["blog_title"]) }}</title>
+    <link rel="stylesheet" href="{{ static_url("css/blog.css") }}" type="text/css" />
+    <link rel="alternate" href="/feed" type="application/atom+xml" title="{{ escape(handler.settings["blog_title"]) }}" />
+        {% block head %}
+        {% end %}
+    <script src="{{ static_url("js/jquery-2.1.1.min.js") }}"></script>
+    <script src="{{ static_url("js/jquery.scrollTo-1.1.13.min.js") }}"></script>
+    <script src="{{ static_url("js/web.js") }}"></script>
+</head>
+
+<body>
+
+
+<div id="header-wrap" class="outer">
+    <header class="inner">
+        <nav>
+            <a href="/">home</a>   
+            <a href="/archive">{{ _("Archive") }}</a>   
+            <a href="/about">about</a>
+            <a href="/feed">about</a>
+            {% if current_user %}
+            <a href="/compose">{{ _("New post") }}</a>
+            <a href="/logout">{{ _("Sign out") }}</a> 
+            {% else %}
+            {% raw _('<a href="%(url)s">Login</a>') % {"url" : "/login"} %}
+            {% end %}   
+        </nav>
+    </header>
+</div>
+
+
+<div id="main-wrap">
+    <div id="section-wrap" class="outer">   
+        <section class="inner">
+            {% block body %}
+                {% end %}
+        </section>
+    </div>
+
+    <div id="aside-wrap" class="outer">
+        <aside id="aside" class="inner">
+            <div class="news">            
+                <ul class="rank">
+                    <li id="top_li"><p>最新文章</p></li>
+                    <li><p>收藏</p></li>
+                    <li><a href="https://appengine.google.com/">GAE</a></li>
+                    <li><a href="https://github.com">github</a></li>
+                </ul>
+            </div>
+        </aside>
+        <div id="side"></div>
+    </div>   
+</div>
+
+
+<div id="gotop">
+    <div id="arrow"></div>
+    <div class="word">TOP</div>
+</div>
+
+<div id="footer-wrap">
+    <footer id="footer">
+        <small>Powered by <a href="http://www.tornadoweb.org/">tornado</a> | ♥ senvid.</small>
+    </footer>
+</div>
+
+
+{% block bottom %}
+{% end %}
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        setFooter();
+        $(window).resize(setFooter);
+
+       
+        asideGet();
+        //
+        mouse_over_out();
+        //
+        show_hide_scroll("#header-wrap","#gotop");
+    });
+    //   
+</script>
+
+<link rel="stylesheet" href="{{ static_url("css/shCore.css") }}" type="text/css" />
+<link rel="stylesheet" href="{{ static_url("css/shThemeDefault.css") }}" type="text/css" />
+<script src="{{ static_url("js/shCore.js") }}"></script>
+<script src="{{ static_url("js/shAutoloader.js") }}"></script>
+<script type="text/javascript">
+    SyntaxHighlighter.autoloader(
+        'bash shell             {{ static_url("js/shBrush/shBrushBash.js") }}',
+        'cpp c                  {{ static_url("js/shBrush/shBrushCpp.js") }}',
+        'c# c-sharp csharp      {{ static_url("js/shBrush/shBrushCSharp.js") }}',
+        'css                    {{ static_url("js/shBrush/shBrushCss.js") }}',
+        'java                   {{ static_url("js/shBrush/shBrushJava.js") }}',
+        'js jscript javascript  {{ static_url("js/shBrush/shBrushJScript.js") }}',
+        'php                    {{ static_url("js/shBrush/shBrushPhp.js") }}',
+        'py python              {{ static_url("js/shBrush/shBrushPython.js") }}',
+        'sql                    {{ static_url("js/shBrush/shBrushSql.js") }}',
+        'xml xhtml xslt html    {{ static_url("js/shBrush/shBrushXml.js") }}'
+    );
+     
+    SyntaxHighlighter.all();
+</script>
+
+</body>
+</html>

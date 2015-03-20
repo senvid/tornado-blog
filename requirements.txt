@@ -1,0 +1,4 @@
+markdown
+tornado
+MySQL-python
+gunicorn==0.14.6

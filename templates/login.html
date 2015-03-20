@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div id="login_outer">	
+	<form  id="login_form" action="" method="post" autocomplete="on">
+		<input id="email" type="email" name="email" required="required" autofocus="autofocus" pattern=".+[@][A-z0-9]+\.[A-z]+" placeholder="Email" /><br />
+		<input id="password" type="password" name="password" required="required" placeholder="Password" /><br />
+		<input id="submit" type="submit" name="login" value="Sign in" />
+		{% module xsrf_form_html() %}
+	</form>
+</div>
+{% end %}
+
+
+
+
+
+
