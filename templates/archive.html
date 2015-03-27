@@ -1,46 +1,41 @@
-{% extends "base.html" %}
-
-{% block body %}
-    {% for entry in entries %}
-        <div class="archive">
-            <a class="title" href="/entry/{{ entry.slug }}">
+{% extends "base.html" %} {% block body %} {% for entry in entries %}
+<div class="archive">
+    <a class="title" href="/entry/{{ entry.slug }}">
                 {{ entry.title }}
             </a>
-            <small class="date">
+    <small class="date">
               {{ locale.format_date(entry.published, full_format=True, shorter=True) }}
-            </small>
-            {% if current_user %}
-            <button class="delete" type="button" name="delete">delete
-            </button>
-            {% end %}
-        </div>
+            </small> {% if current_user %}
+    <button class="delete" type="button" name="delete">delete
+    </button>
     {% end %}
-    
-{% end %}
-
-{% block bottom %}
+</div>
+{% end %} {% end %} {% block bottom %}
 <script type="text/javascript">
-    function getCookie(name){
-        var cookie_re = document.cookie.match("\\b" + name + "=([^;]*)\\b");
-        return cookie_re ? cookie_re[1] :undefine;
-    };
+function getCookie(name) {
+    var cookie_re = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+    return cookie_re ? cookie_re[1] : undefine;
+};
 
-    $(".delete").click(function(){
-        var title_t = $(this).parent().find("a").text();
-        var slug_s = $(this).parent().find("a").attr("href");
-        var data = { title : title_t , slug : slug_s };
-        data._xsrf = getCookie("_xsrf");
-        var this_box = $(this);
-         
-        $.post("/delete",
-            $.param(data),
-            function(data,status){
-                if (data == "deleted" && status == "success"){
-                    this_box.hide(1000);
-                    this_box.parent().hide(1800);
-                }
+$(".delete").click(function() {
+    var title_t = $(this).parent().find("a").text();
+    var slug_s = $(this).parent().find("a").attr("href");
+    var data = {
+        title: title_t,
+        slug: slug_s
+    };
+    data._xsrf = getCookie("_xsrf");
+    var this_box = $(this);
+
+    $.post("/delete",
+        $.param(data),
+        function(msg, status) {
+            if (msg == "deleted" && status == "success") {
+                this_box.hide(1000);
+                this_box.parent().hide(1800);
             }
-        )
-    });
+        }
+    )
+});
 </script>
 {% end %}

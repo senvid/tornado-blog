@@ -10,9 +10,9 @@
     <link rel="alternate" href="/feed" type="application/atom+xml" title="{{ escape(handler.settings["blog_title"]) }}" />
         {% block head %}
         {% end %}
-    <script src="{{ static_url("js/jquery-2.1.1.min.js") }}"></script>
-    <script src="{{ static_url("js/jquery.scrollTo-1.1.13.min.js") }}"></script>
-    <script src="{{ static_url("js/web.js") }}"></script>
+    <script type="text/javascript" src="{{ static_url("js/jquery-2.1.1.min.js") }}"></script>
+    <script type="text/javascript" src="{{ static_url("js/jquery.scrollTo-1.1.13.min.js") }}"></script>
+    <script type="text/javascript" src="{{ static_url("js/web.js") }}"></script>
 </head>
 
 <body>
@@ -24,7 +24,6 @@
             <a href="/">home</a>   
             <a href="/archive">{{ _("Archive") }}</a>   
             <a href="/about">about</a>
-            <a href="/feed">about</a>
             {% if current_user %}
             <a href="/compose">{{ _("New post") }}</a>
             <a href="/logout">{{ _("Sign out") }}</a> 
@@ -67,7 +66,7 @@
 
 <div id="footer-wrap">
     <footer id="footer">
-        <small>Powered by <a href="http://www.tornadoweb.org/">tornado</a> | ♥ senvid.</small>
+        <small>Powered by <a href="http://www.tornadoweb.org/">tornado</a> | senvid.</small>
     </footer>
 </div>
 

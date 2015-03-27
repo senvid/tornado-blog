@@ -1,18 +1,48 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block body %}
+<script type="text/javascript" src="{{ static_url("js/sha1.js") }}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#login_form").submit(function() {
+        var mypassword = $("#password").val();
+        var sha1obj = new jsSHA(mypassword, "TEXT");
+        var sha1password = sha1obj.getHash("SHA-1", "HEX");
 
-{% block body %}
-<div id="login_outer">	
-	<form  id="login_form" action="" method="post" autocomplete="on">
-		<input id="email" type="email" name="email" required="required" autofocus="autofocus" pattern=".+[@][A-z0-9]+\.[A-z]+" placeholder="Email" /><br />
-		<input id="password" type="password" name="password" required="required" placeholder="Password" /><br />
-		<input id="submit" type="submit" name="login" value="Sign in" />
-		{% module xsrf_form_html() %}
-	</form>
+        function getCookie(name) {
+            var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+            return r ? r[1] : undefined;
+        }
+        var args = {
+            "_xsrf": getCookie("_xsrf"),
+            "email": $("#email").val(),
+            "password": sha1password
+        };
+        $.post(
+            "/login",
+            $.param(args),
+            function(msg) {
+                if ("ok" == msg) {
+                    window.location.href = "/";
+                } else {
+                    $("#login_outer p").hide(1000);
+                    $("#login_outer").append('<p>"Incorrect username or password.."</p>').css("color", "#C8C6C6");
+                }
+            }
+        );
+        return false;
+    });
+})
+</script>
+<div id="login_outer">
+    <form id="login_form" action="" method="post" autocomplete="on">
+        <input id="email" type="email" name="email" required="required" pattern=".+[@][A-z0-9]+\.[A-z]+" placeholder="Email" />
+        <br />
+        <input id="password" type="password" name="password" required="required" placeholder="Password" />
+        <br />
+        <input id="submit" type="submit" name="login" value="sign in" />
+        <!--
+         module xsrf_form_html() 
+        已使用ajax替代
+        -->
+    </form>
 </div>
 {% end %}
-
-
-
-
-
-
