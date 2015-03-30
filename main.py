@@ -27,6 +27,8 @@ define("mysql_host", default="127.0.0.1:3306", help="blog database host")
 define("mysql_database", default="blog", help="blog database name")
 define("mysql_user", default="blog", help="blog database user")
 define("mysql_password", default="blog", help="blog database password")
+#每页显示多少文章
+sp = 3
 
 class BaseHandler(tornado.web.RequestHandler):
     @property
@@ -56,9 +58,12 @@ class PageNoFindHandler(tornado.web.RequestHandler):
 class HomeHandler(BaseHandler):
     def get(self):
         entries = self.db.query("SELECT * FROM entries ORDER BY published "
-                                "DESC LIMIT 5")
+                                "DESC LIMIT %s",sp)
         count_id = self.db.get("SELECT count(id) FROM entries;")
-        sumPage = count_id["count(id)"] / 5 + 1
+        if count_id["count(id)"] % sp == 0:
+            sumPage = count_id["count(id)"] / sp
+        else:
+            sumPage = count_id["count(id)"] / sp + 1
         if not entries:
             self.redirect("/compose")
             return
@@ -71,26 +76,34 @@ class AsideJsonHandler(BaseHandler):
         self.write(json.dumps(aside_title))
 
 class PageHandler(BaseHandler):
-    def get(self,page_num):
+    def get(self):
+        try:         
+            page_num = self.get_argument("page_num",1)
             if int(page_num) > 0:
-                page_start = int(page_num) * 5 - 5
+                page_start = int(page_num) * sp - sp
                 entries = self.db.query("SELECT * FROM entries ORDER BY published "
-                            "DESC LIMIT %s,5",page_start)
+                            "DESC LIMIT %s,%s" % (page_start,sp))
                 count_id = self.db.get("SELECT count(id) FROM entries;")
-                sumPage = count_id["count(id)"] / 5 + 1
+                if count_id["count(id)"] % sp == 0:
+                    sumPage = count_id["count(id)"] / sp
+                else:
+                    sumPage = count_id["count(id)"] / sp + 1
                 if not entries: raise tornado.web.HTTPError(404)
-                self.render("home.html",entries=entries,sumPage=sumPage)            
-            self.redirect("/")
+                self.render("home.html",entries=entries,sumPage=sumPage)
+            else:self.redirect("/")
+        except:           
+            #self.redirect("/")
+            self.write("NO PAGE FOUND")
 
 class PageJsonHandler(BaseHandler):
     def get(self):
         page_num = self.get_argument("page_num",None)
         if page_num:
-            page_start = int(page_num) * 5 - 5
+            page_start = int(page_num) * sp - sp
            # entries = self.db.query("SELECT * FROM entries ORDER BY published " 
             #            "DESC LIMIT %s,5" , page_start)
             entries = self.db.query("SELECT slug,title,id,published,html  FROM entries ORDER BY published " 
-                        "DESC LIMIT %s,5" , page_start)
+                        "DESC LIMIT %s,%s" % (page_start,sp))
             if not entries: raise tornado.web.HTTPError(404)         
             self.write(json.dumps(entries,cls=Tojson))
 
@@ -169,13 +182,13 @@ class ComposeHandler(BaseHandler):
         else: self.write("Please enter a valid content")
 
 class AuthLoginHandler(BaseHandler):
-
+ 
     @tornado.web.asynchronous
     def get(self):
         if self.get_secure_cookie("blog_user"):
             self.redirect("/")
             return
-        else:
+        else:           
             mytoken = binascii.b2a_hex(os.urandom(16))
             self.set_cookie("_xsrf",mytoken)
         self.render("login.html")
@@ -224,9 +237,9 @@ settings = dict(
     static_path=os.path.join(os.path.dirname(__file__), "static"),
     ui_modules={"Entry": EntryModule},
     xsrf_cookies=True,
-    cookie_secret="NTliOTY5NzJkYTVlMTU0OTAwMTdlNjgzMTA5M2U3OGQ5NDIxZmU3Mg16",
+    cookie_secret="swliOTY5NzJkYTVlMTU0OTAwMTdlNjgzMTA5M2U3OGQ5NDIxZmU3Mg16",
     login_url="/login",
-    debug=False,
+    debug=True,
     autoreload=True
 )
 '''
@@ -254,7 +267,7 @@ def application(environ,start_response):
 
 app = tornado.web.Application([
     (r"/", HomeHandler),
-    (r"/page/(\d+)",PageHandler),
+    (r"/page", PageHandler),
     (r"/archive", ArchiveHandler),
     (r"/feed", FeedHandler),
     (r"/entry/([^/]+)", EntryHandler),
@@ -275,3 +288,4 @@ if __name__ == "__main__":
 
     tornado.autoreload.start(loop)
     loop.start()
+

@@ -91,7 +91,7 @@ function localSave(obj, log_obj) {
             var delta = 0;
             if (window.localStorage.getItem(value)) {
                 delta = ((new Date()).getTime() - (new Date()).setTime(window.localStorage.getItem("timestamp"))) / 1000;
-                document.querySelector(log_obj).innerHTML = "last saved:" + Math.round(delta) + "s ago.";
+                if (delta) document.querySelector(log_obj).innerHTML = "last saved:" + Math.round(delta) + "s ago.";
             }
         }
     }
@@ -131,6 +131,7 @@ function queryPageNum(pageNum, send_data, sumPage, onPage) {
             };
             //
             $("#entry_list a").remove();
+            $("#entry_list span").remove();
             rebuildPageArea(pageNum, sumPage, onPage);
         }
     });
@@ -153,10 +154,15 @@ function rebuildPageArea(pageNum, sumPage, onPage) {
 
 function AreaBuild(begin, end) {
     var count = 0;
-    for (var i = begin; i <= end; i++) {
-        //var pageArea = '<a href=/page?page_num='+i+'>'+i+'</a>';
-        var pageArea = '<a class="rebulid_a" href="#">' + i + '</a>';
-        //href=javascript:void(0) 不自动跳转到页首
+    for (var i = begin - 1; i <= end; i++) {
+        if (i == 0) {
+            i++;
+            var pageArea = '<span class="rebulid_a">' + i + '</span>';
+        } else if (begin == i && i != 1) {
+            var pageArea = '<span class="rebulid_a">' + i + '</span>';
+        } else {
+            var pageArea = '<a class="rebulid_a" href="/page?page_num=' + i + '">' + i + '</a>';
+        };
 
         $("#entry_list").append(pageArea);
         count++;

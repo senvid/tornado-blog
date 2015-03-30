@@ -262,13 +262,16 @@ a:hover {
     border-top: 1px solid #CCCCCC;
 }
 
-#entry_list a {
+#entry_list a,span {
     display: block;
     float: left;
     border: 1px solid #CCCCCC;
     margin: 1em 0.2em 3em 0.2em;
     padding: 0.2em 1em;
     border-radius: 5px;
+}
+#entry_list span{
+    background-color: #CCCCCC;
 }
 
 .article {
