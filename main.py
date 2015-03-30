@@ -1,20 +1,26 @@
-#!/home/sun/work/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import tornado
 import tornado.web
 import tornado.ioloop
 import tornado.autoreload
-import torndb
-import markdown
-import os.path
-import re
+from datetimeTojson import Tojson
 from tornado.options import define, options
-
 import time
 import json
-from datetimeTojson import Tojson
-
+import logging
+import os.path
+import re
+import binascii
+try:
+    import torndb
+except ImportError:
+    logging.warn("no module named torndb")
+try:
+    import markdown
+except ImportError:
+    logging.warn("no module named markdown")
 
 define("port", default=8000, help="run on the given port", type=int)
 define("mysql_host", default="127.0.0.1:3306", help="blog database host")
@@ -31,7 +37,7 @@ class BaseHandler(tornado.web.RequestHandler):
         return self.conn
 
     def get_current_user(self):
-        user_id = self.get_cookie("blog_user")
+        user_id = self.get_secure_cookie("blog_user")
         if not user_id: return None
         return self.db.get("SELECT * FROM users WHERE id = %s", int(user_id))
 
@@ -163,11 +169,15 @@ class ComposeHandler(BaseHandler):
         else: self.write("Please enter a valid content")
 
 class AuthLoginHandler(BaseHandler):
+
     @tornado.web.asynchronous
     def get(self):
-        if self.get_cookie("blog_user"):
+        if self.get_secure_cookie("blog_user"):
             self.redirect("/")
             return
+        else:
+            mytoken = binascii.b2a_hex(os.urandom(16))
+            self.set_cookie("_xsrf",mytoken)
         self.render("login.html")
     
     #@tornado.web.asynchronous
@@ -179,7 +189,7 @@ class AuthLoginHandler(BaseHandler):
             author_id = self.db.get("SELECT id FROM users WHERE email = %s and password = %s", email,password)
             #返回一个字典 例如:{'id':1}
             if author_id:
-                self.set_cookie("blog_user", str(author_id['id']))
+                self.set_secure_cookie("blog_user", str(author_id['id']))
                 #self.redirect("/")
                 self.write("ok")
                 return
@@ -216,7 +226,7 @@ settings = dict(
     xsrf_cookies=True,
     cookie_secret="NTliOTY5NzJkYTVlMTU0OTAwMTdlNjgzMTA5M2U3OGQ5NDIxZmU3Mg16",
     login_url="/login",
-    debug=True,
+    debug=False,
     autoreload=True
 )
 '''
@@ -259,6 +269,7 @@ app = tornado.web.Application([
 ],**settings)
 
 if __name__ == "__main__":
+    tornado.options.parse_command_line()
     app.listen(options.port)
     loop = tornado.ioloop.IOLoop.instance()
 
