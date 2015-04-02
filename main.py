@@ -13,6 +13,7 @@ import logging
 import os.path
 import re
 import binascii
+import hashlib
 try:
     import torndb
 except ImportError:
@@ -196,18 +197,21 @@ class AuthLoginHandler(BaseHandler):
     #@tornado.web.asynchronous
     def post(self):
         email = self.get_argument("email",None)
-        password = self.get_argument("password",None)
+        url_password = self.get_argument("password",None)
         
-        if email and password:
-            author_id = self.db.get("SELECT id FROM users WHERE email = %s and password = %s", email,password)
+        if email and url_password:
+            author_ver = self.db.get("SELECT id,regdate,password FROM users WHERE email = %s", email)
             #返回一个字典 例如:{'id':1}
-            if author_id:
-                self.set_secure_cookie("blog_user", str(author_id['id']))
-                #self.redirect("/")
-                self.write("ok")
-                return
-            else:
-                self.write("false")
+            if author_ver:
+                hash_ver = hashlib.sha1(url_password + author_ver["regdate"]).hexdigest()
+
+                if  hash_ver == author_ver["password"]:
+                    self.set_secure_cookie("blog_user", str(author_ver['id']))
+                    #self.redirect("/")
+                    self.write("ok")
+                    return
+                else:
+                    self.write("false")
         else :
             self.write("false")
 
