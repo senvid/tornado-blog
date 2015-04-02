@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
+  <!-- ATOM 聚合接口 -->
   {% set date_format = "%Y-%m-%dT%H:%M:%SZ" %}
   <title>{{ handler.settings["blog_title"] }}</title>
   {% if len(entries) > 0 %}
