@@ -58,7 +58,7 @@ class PageNoFindHandler(tornado.web.RequestHandler):
 
 class HomeHandler(BaseHandler):
     def get(self):
-        entries = self.db.query("SELECT * FROM entries ORDER BY published "
+        entries = self.db.query("SELECT * FROM entries ORDER BY id "
                                 "DESC LIMIT %s",sp)
         count_id = self.db.get("SELECT count(id) FROM entries;")
         if count_id["count(id)"] % sp == 0:
@@ -72,7 +72,7 @@ class HomeHandler(BaseHandler):
 
 class AsideJsonHandler(BaseHandler):
     def get(self):
-        aside_title = self.db.query("SELECT title,slug FROM entries ORDER BY published "
+        aside_title = self.db.query("SELECT title,slug FROM entries ORDER BY id "
                                     "DESC LIMIT 6")
         self.write(json.dumps(aside_title))
 
@@ -82,7 +82,7 @@ class PageHandler(BaseHandler):
             page_num = self.get_argument("page_num",1)
             if int(page_num) > 0:
                 page_start = int(page_num) * sp - sp
-                entries = self.db.query("SELECT * FROM entries ORDER BY published "
+                entries = self.db.query("SELECT * FROM entries ORDER BY id "
                             "DESC LIMIT %s,%s" % (page_start,sp))
                 count_id = self.db.get("SELECT count(id) FROM entries;")
                 if count_id["count(id)"] % sp == 0:
@@ -103,7 +103,7 @@ class PageJsonHandler(BaseHandler):
             page_start = int(page_num) * sp - sp
            # entries = self.db.query("SELECT * FROM entries ORDER BY published " 
             #            "DESC LIMIT %s,5" , page_start)
-            entries = self.db.query("SELECT slug,title,id,published,html  FROM entries ORDER BY published " 
+            entries = self.db.query("SELECT slug,title,id,published,html  FROM entries ORDER BY id " 
                         "DESC LIMIT %s,%s" % (page_start,sp))
             if not entries: raise tornado.web.HTTPError(404)         
             self.write(json.dumps(entries,cls=Tojson))
@@ -116,13 +116,13 @@ class EntryHandler(BaseHandler):
 
 class ArchiveHandler(BaseHandler):
     def get(self):
-        entries = self.db.query("SELECT title,published,slug FROM entries ORDER BY published "
+        entries = self.db.query("SELECT title,published,slug FROM entries ORDER BY id "
                                 "DESC")
         self.render("archive.html", entries=entries)
 
 class FeedHandler(BaseHandler):
     def get(self):
-        entries = self.db.query("SELECT * FROM entries ORDER BY published "
+        entries = self.db.query("SELECT * FROM entries ORDER BY id "
                                 "DESC LIMIT 10")
         self.set_header("Content-Type", "application/atom+xml")
         self.render("feed.xml", entries=entries)
