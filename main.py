@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 import tornado
 import tornado.web
 import tornado.ioloop
@@ -196,11 +197,11 @@ class AuthLoginHandler(BaseHandler):
     
     #@tornado.web.asynchronous
     def post(self):
-        email = self.get_argument("email",None)
-        password = self.get_argument("password",None)
+        email = self.get_argument("email", None)
+        password = self.get_argument("password", None)
         
         if email and password:
-            author_id = self.db.get("SELECT id FROM users WHERE email = %s and password = %s", email,password)
+            author_id = self.db.get("SELECT id FROM users WHERE email = %s and password = %s", email, password)
             #返回一个字典 例如:{'id':1}
             if author_id:
                 self.set_secure_cookie("blog_user", str(author_id['id']))
