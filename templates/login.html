@@ -15,7 +15,9 @@ $(document).ready(function() {
             "email": $("#email").val(),
             "password": sha1password
         };
-        $("#submit").attr("disabled",true).css("color", "#C8C6C6");
+        $("#submit").attr("disabled",true).css("background", "#C8C6C6");
+        $("#login_outer p").hide(1000);
+
         $.post(
             "/login",
             $.param(args),
@@ -24,8 +26,7 @@ $(document).ready(function() {
                     window.location.href = "/";
                 } else {
                     $("#login_outer").append('<p>"Incorrect username or password.."</p>').css("color", "#C8C6C6");
-                    $("#login_outer p").hide(1000);
-                    $("#submit").attr("disabled",false);
+                    $("#submit").attr("disabled",false).css("background","#069DD5");
                 }
             }
         );
