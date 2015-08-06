@@ -1,4 +1,4 @@
-###Demo仅供学习测试
+###Demo仅供学习
 
 
 
@@ -30,27 +30,23 @@
 
 <pre><code>
 CREATE TABLE IF NOT EXISTS `entries` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `author_id` int(11) NOT NULL,
-  `slug` varchar(20) NOT NULL,
+  `slug` varchar(50) NOT NULL UNIQUE,
   `title` varchar(100) NOT NULL,
   `markdown` mediumtext NOT NULL,
   `html` mediumtext NOT NULL,
   `published` datetime NOT NULL,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `slug` (`slug`),
   KEY `published` (`published`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 </pre></code>
 
 <pre><code>
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(50) NOT NULL,
+  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `email` varchar(50) NOT NULL UNIQUE,
   `password` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 </pre></code>
 

@@ -36,8 +36,12 @@ class BaseHandler(tornado.web.RequestHandler):
     @property
     def db(self):
         self.conn = torndb.Connection(
-            host=options.mysql_host, database=options.mysql_database,
-            user=options.mysql_user, password=options.mysql_password)
+            host=options.mysql_host, 
+            database=options.mysql_database,
+            user=options.mysql_user, 
+            password=options.mysql_password,
+            time_zone='+8:00'
+        )
         return self.conn
 
     def get_current_user(self):
@@ -165,10 +169,6 @@ class ComposeHandler(BaseHandler):
                 '''
                 today =time.strftime("%Y%m%d")
                 max =self.db.get("SELECT MAX(id) FROM entries")
-                #单行查询用get 多行用query。get不允许查询多行 否则引发异常
-                #前者返回一个字典 后者返回一个包含字典的列表，每行为一个字典
-                #此处返回的对象格式是{'MAX(id)': 23L}
-
                 max_id = max["MAX(id)"]
                 if not max_id : max_id = 100
                 slug = "-".join([today,str(max_id)])
@@ -202,7 +202,6 @@ class AuthLoginHandler(BaseHandler):
         
         if email and password:
             author_id = self.db.get("SELECT id FROM users WHERE email = %s and password = %s", email, password)
-            #返回一个字典 例如:{'id':1}
             if author_id:
                 self.set_secure_cookie("blog_user", str(author_id['id']))
                 #self.redirect("/")
@@ -245,7 +244,7 @@ settings = dict(
     autoreload=True
 )
 '''
-wsgi相关 已废弃
+wsgi 
 app = tornado.wsgi.WSGIApplication([
     (r"/", HomeHandler),
     (r"/page/(\d+)",PageHandler),
@@ -287,7 +286,6 @@ if __name__ == "__main__":
     tornado.options.parse_command_line()
     app.listen(options.port)
     loop = tornado.ioloop.IOLoop.instance()
-
     tornado.autoreload.start(loop)
     loop.start()
 
