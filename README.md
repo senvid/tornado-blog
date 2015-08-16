@@ -1,15 +1,14 @@
-###Demo仅供学习
+##Demo仅供学习
 
 
-
-##介绍
+###介绍
 
 简单博客程序.
 
 参考了tornado中的实例.
 
 
-##依赖
+###依赖
 
 * python2.7
 * tornado
@@ -19,16 +18,16 @@
 * markdown
 
 
-##使用的js库
+###使用的js库
 
-* SyntaxHighlighter 3.0.83
-* jQuery v2.1.1
-* jquery.scrollTo-1.1.13
-* jsSHA/1.6.0/sha1.js
+- [x] SyntaxHighlighter 3.0.83
+- [x] jQuery v2.1.1
+- [x] jquery.scrollTo-1.1.13
+- [x] jsSHA/1.6.0/sha1.js
 
-##MySQL表结构
+###MySQL表结构
 
-<pre><code>
+```
 CREATE TABLE IF NOT EXISTS `entries` (
   `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `author_id` int(11) NOT NULL,
@@ -40,13 +39,13 @@ CREATE TABLE IF NOT EXISTS `entries` (
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   KEY `published` (`published`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-</pre></code>
+```
 
-<pre><code>
+```
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `email` varchar(50) NOT NULL UNIQUE,
   `password` varchar(50) NOT NULL,
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-</pre></code>
+```
 
