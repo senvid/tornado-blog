@@ -33,6 +33,11 @@
     <script type="text/javascript" src="{{ static_url("js/web.js") }}"></script>
  -->
     <!--  -->
+    <style type="text/css">
+    pre {
+        border: 0;
+    }
+    </style>
 </head>
 
 <body>
@@ -45,7 +50,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">My blog</a>
+                <a class="navbar-brand" href="/">My blog</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav nav-pills pull-right">
@@ -77,71 +82,11 @@
             </div>
         </div>
     </nav>
-    <div class="container" style="background-color: #CCCCCC">
-        <div id="main-wrap" class="col-md-8">
-            <div id="section-wrap" class="outer">
-                <section class="inner">
-                    {% block body %} {% end %}
-                </section>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <nav>
-                <form class="navbar-form" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search" style="outline: 0;box-shadow: 0 0 8px rgba(82,168,236,.6);">
-                    </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </form>
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">最新文章</h3>
-                    </div>
-                    <div class="panel-body list-group">
-                        <li>
-                            <a href="#" class="list-group-item">
-                                <h5 class="list-group-item-heading">List group item heading</h5>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="list-group-item">
-                                <h5 class="list-group-item-heading">List group item heading</h5>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="list-group-item">
-                                <h5 class="list-group-item-heading">List group item heading</h5>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="list-group-item">
-                                <h5 class="list-group-item-heading">List group item heading</h5>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="list-group-item">
-                                <h5 class="list-group-item-heading">List group item heading</h5>
-                            </a>
-                        </li>
-                    </div>
-                </div>
-                <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Tag</h3>
-                    </div>
-                    <div class="panel-body list-group">
-                        
-                            <a href="" class="list-group-item">python(2)</a>
-                            <a href="" class="list-group-item">linux(12)</a>
-                            <a href="" class="list-group-item">MySQL(5)</a>
-                
-                    </div>
-                </div>
-               
-                <nav>
-        </div>
+    <div class="container"  style="min-height: 500px">
+    {% block body %}
+    {% end %}
     </div>
-    <div class="container" style="background-color: #CC99FF">
+    <div class="container">
         <!--         <div id="gotop">
             <div id="arrow"></div>
             <div class="word">TOP</div>

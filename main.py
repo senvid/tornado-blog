@@ -25,7 +25,7 @@ except ImportError:
     logging.warn("no module named markdown")
 
 define("port", default=8000, help="run on the given port", type=int)
-define("mysql_host", default="127.0.0.1:3306", help="blog database host")
+define("mysql_host", default="192.168.20.10:3306", help="blog database host")
 define("mysql_database", default="blog", help="blog database name")
 define("mysql_user", default="blog", help="blog database user")
 define("mysql_password", default="blog", help="blog database password")
@@ -160,6 +160,16 @@ class EntryModule(tornado.web.UIModule):
     def render(self, entry):
         return self.render_string("modules/entry.html", entry=entry)
 
+class ArticleModule(tornado.web.UIModule):
+
+    def render(self):
+        return self.render_string("modules/article.html")
+
+class AsideModule(tornado.web.UIModule):
+
+    def render(self):
+        return self.render_string("modules/aside.html")
+
 
 class ComposeHandler(BaseHandler):
 
@@ -276,7 +286,11 @@ settings = dict(
     blog_title=u"Blog",
     template_path=os.path.join(os.path.dirname(__file__), "templates"),
     static_path=os.path.join(os.path.dirname(__file__), "static"),
-    ui_modules={"Entry": EntryModule},
+    ui_modules={
+                "Entry": EntryModule,
+                "Article": ArticleModule,
+                "Aside": AsideModule,
+            },
     xsrf_cookies=True,
     cookie_secret="swliOTY5NzJkYTVlMTU0OTAwMTdlNjgzMTA5M2U3OGQ5NDIxZmU3Mg16",
     login_url="/login",
