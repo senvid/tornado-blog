@@ -55,6 +55,6 @@ CKEDITOR.editorConfig = function( config ) {
 	config.extraPlugins = 'codesnippet';
 	config.codeSnippet_theme = 'monokai_sublime';
 	// codeSnippet_theme: 'rainbow';
-	config.height = 300;
+	config.height = '260';
 	config.toolbarCanCollapse = true;
 };

@@ -3,15 +3,17 @@
     <div id="section-wrap" class="outer">
         <section class="inner">
             {% for entry in entries %}
-            <div class="panel panel-danger">
+            <div class="panel panel-info">
                 <div class="panel-heading">
                     <a class="title" href="/entry/{{ entry.slug }}">{{ entry.title }}</a>
                 </div>
                 <div class="panel-body">
+                    <div>
                     <small class="date">
                     {{ locale.format_date(entry.published, full_format=True, shorter=True) }}
                 </small> {% if current_user %}
-                    <button class="delete" type="button" name="delete">delete</button>
+                </div>
+                    <button class="delete btn btn-info btn-sm" type="button" name="delete">delete</button>
                     {% end %}
                 </div>
             </div>

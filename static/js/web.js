@@ -10,26 +10,14 @@ function mouse_over_out() {
         $(".edit a").mouseout(function() {
             $(this).css("background", "#C8C6C6");
         });
-        //
-
-        //
-        $(".delete").mouseover(function() {
-            $(this).css({
-                "background": "#FD739E",
-                "cursor": "pointer"
-            });
-        });
-        $(".delete").mouseout(function() {
-            $(this).css("background", "#DDDDDD");
-        });
         //   
-        $("#entry_list a").mouseover(function() {
+        $("#paging .ready").mouseover(function() {
             $(this).css({
                 "border-color": "#0CC65B",
                 "cursor": "pointer"
             });
         });
-        $("#entry_list a").mouseout(function() {
+        $("#paging .ready").mouseout(function() {
             $(this).css("border-color", "#CCCCCC");
         });
         //
@@ -130,8 +118,8 @@ function queryPageNum(pageNum, send_data, sumPage, onPage) {
                 art = art.next();
             };
             //
-            $("#entry_list a").remove();
-            $("#entry_list span").remove();
+            $("#paging a").remove();
+            $("#paging span").remove();
             rebuildPageArea(pageNum, sumPage, onPage);
         }
     });
@@ -154,21 +142,43 @@ function rebuildPageArea(pageNum, sumPage, onPage) {
 
 function AreaBuild(begin, end) {
     var count = 0;
+    if (begin < 1) { return };
     for (var i = begin - 1; i <= end; i++) {
         if (i == 0) {
-            i++;
-            var pageArea = '<span class="rebulid_a">' + i + '</span>';
-        } else if (begin == i && i != 1) {
-            var pageArea = '<span class="rebulid_a">' + i + '</span>';
+            i =1;
+            //var pageArea = '<span class="rebulid_a">' + i + '</span>';
+            var pageArea = '<li class="active"><a href="#">' + i + '</a></li>';
+        } else if (begin == i && begin != 1) {
+            var pageArea = '<li class="active"><a href="#">' + i + '</a></li>';
         } else {
-            var pageArea = '<a class="rebulid_a" href="/page?page_num=' + i + '">' + i + '</a>';
+            // var pageArea = '<a class="rebulid_a" href="/page?page_num=' + i + '">' + i + '</a>';
+            var pageArea = '<li><a class="ready" href="/page?page_num=' + i + '">' + i + '</a></li>';
         };
 
-        $("#entry_list").append(pageArea);
+        $("#paging").append(pageArea);
         count++;
         if (count >= 3) break;
     };
 }
+
+// function AreaBuild(begin, end) {
+//     var count = 0;
+//     if (begin <= 0) { return };
+//     for (var i = begin - 1; i <= end; i++) {
+//         if (i == 0) {
+//             i = 1;
+//             var pageArea = '<span class="rebulid_a">' + i + '</span>';
+//         } else if (begin == i && begin != 1) {
+//             var pageArea = '<span class="rebulid_a">' + i + '</span>';
+//         } else {
+//             var pageArea = '<a class="rebulid_a" href="/page?page_num=' + i + '">' + i + '</a>';
+//         };
+//         $("#paging").append(pageArea);
+//         count++;
+//         if (count >= 3) break;
+//     };
+// }
+
 
 //aside 
 function asideGet() {
@@ -186,4 +196,14 @@ function asideGet() {
             };
         }
     })
+}
+
+//get first argument of current url
+function geturlargs() {
+    var url = window.location.search;
+    if (url.indexOf("?") == 0) {
+        var url_str = url.substr(1).split("=");
+        var url_args = url_str[1]
+    };
+    return url_args
 }

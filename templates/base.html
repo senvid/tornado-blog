@@ -8,72 +8,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html">
     <title>{{ escape(handler.settings["blog_title"]) }}</title>
-    <!--  -->
-    <!-- <link rel="stylesheet" href="{{ static_url("css/blog.css") }}" type="text/css" /> -->
-    <!--  -->
     <link rel="alternate" href="/feed" type="application/atom+xml" title="myblog"> 
-    {% block head %} {% end %}
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!-- bs -->
+    <link rel="stylesheet" type="text/css" href="{{ static_url("bootstrap-3.3.5/css/bootstrap.min.css") }}">
     <!--[if lt IE 9]>
-      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+        <h3>Your browser is too old.. Touch me to upgrade it.</h3>
+        <a href="http://www.google.cn/chrome/"><h2>chrome</h2></a>
+        <a href="www.mozilla.org"><h2>firefox</h2></a>
     <![endif]-->
-    <!--  -->
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="//cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <!--  -->
-    <!--  -->
-    <!-- 
     <script type="text/javascript" src="{{ static_url("js/jquery-2.1.1.min.js") }}"></script>
-    <script type="text/javascript" src="{{ static_url("js/jquery.scrollTo-1.1.13.min.js") }}"></script>
+    <script type="text/javascript" src="{{ static_url("bootstrap-3.3.5/js/bootstrap.min.js") }}"></script>
     <script type="text/javascript" src="{{ static_url("js/web.js") }}"></script>
- -->
     <!--  -->
-    <style type="text/css">
-    pre {
-        border: 0;
-    }
-/*    .container {
-    padding-right: 0px;
-    padding-left: 0px;
-    }*/
- /*   #footer-wrap {
-        margin-right: 0px;
-        margin-left: auto;
+    <link rel="stylesheet" href="{{ static_url("css/main.css") }}" type="text/css" />
+    <!--  -->
+    <!-- <script type="text/javascript" src="{{ static_url("js/jquery.scrollTo-1.1.13.min.js") }}">
+    </script> -->
 
-    }*/
-    /**/
-    html,body{
-        margin: 0;
-        padding:0;
-        height: 100%;
-    }
-    #body-wrap{
-        min-height: 100%;
-        position: relative;
-    }
-    #main-wrap{
-        padding-bottom: 30px;
-    }
-    #footer-wrap{
-        position: absolute;
-        bottom: 0;
-        /*width: 100%;*/
-        height: 30px;
-        
-    }
-    /**/
-    </style>
+    {% block head %} 
+    {% end %}
 </head>
 
 <body>
-    <div id="body-wrap">
-    <nav class="navbar navbar-default navbar-static-top">
+    <nav id="nav-head" class="navbar navbar-default navbar-static-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -114,41 +71,38 @@
             </div>
         </div>
     </nav>
-    <div class="container"  style="min-height: 100%">
-    <div id="main-wrap" class="row">
-    {% block body %}
-    {% end %}
+    <div class="container">
+        {% block body %}
+        {% end %}
     </div>
-    
-    {% block bottom %} {% end %}
-            <div id="footer-wrap" class="row">
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">
                 <small>Powered by <a href="http://www.tornadoweb.org/">tornado</a> | senvid.</small>
-            </div>
-
-
-        <!--         <div id="gotop">
-            <div id="arrow"></div>
-            <div class="word">TOP</div>
-        </div> -->
-   
-
-    <!-- 
-<script type="text/javascript">
-    $(document).ready(function(){
-        setFooter();
-        $(window).resize(setFooter);
-
-       
-        asideGet();
-        //
-        mouse_over_out();
-        //
-        show_hide_scroll("#header-wrap","#gotop");
-    });
-    //   
-</script>
- -->
-</div>
+            </p>
+        </div>
+    </footer>
+    {% block bottom %} 
+    {% end %}
+<!-- <div id="gotop">
+    <div id="arrow"></div>
+    <div class="word">TOP</div>
+</div> -->
 </body>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    // setFooter();
+    // $(window).resize(setFooter);
+    // asideGet();
+    //
+    mouse_over_out();
+    //
+    //show_hide_scroll("#header-wrap","#gotop");
+});
+   
+</script>
+
 
 </html>

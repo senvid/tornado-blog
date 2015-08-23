@@ -1,56 +1,51 @@
 {% extends "base.html" %} 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{{ static_url("ckeditor/plugins/codesnippet/lib/highlight/styles/monokai_sublime.css") }}">
-<script type="text/javascript" src="{{ static_url("ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js") }}"></script>
-<script>hljs.initHighlightingOnLoad();</script>
+    <link rel="stylesheet" type="text/css" href="{{ static_url("ckeditor/plugins/codesnippet/lib/highlight/styles/monokai_sublime.css") }}">
+    <script type="text/javascript" src="{{ static_url("ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js") }}"></script>
+    <script>
+    
+</script>
 {% end %}
-
 {% block body %}
-<div id="main-wrap" class="col-md-8">
-    <div id="section-wrap" class="outer">
-        <section class="inner">
-            {% for entry in entries %}
-            <article class="article">
-                {% module Entry(entry) %}
-            </article>
-            {% end %}
-            <input id="sumPage" type="hidden" value={{ sumPage }} />
-            <div id="entry_list">
-            </div>
-        </section>
+<div class="col-md-8 main-wrap">
+    <section class="inner">
+        {% for entry in entries %}
+        <article class="article">
+            {% module Entry(entry) %}
+        </article>
+        {% end %}
+    </section>
+    <hr />
+    <!-- paging -->
+    <input id="sumPage" type="hidden" value={{ sumPage }} />
+    <nav>
+        <ul id="paging" class="pagination">
+        </ul>
+    </nav>
+</div>
+
+<div class="col-md-3 col-md-offset-1 main-wrap">
+    <div id="aside-wrap">
+        {% module Aside() %}
     </div>
 </div>
-{% module Aside() %}
-{% end %} 
-
+{% end %}
 {% block bottom %}
 <script type="text/javascript">
 $(document).ready(function() {
+    hljs.initHighlightingOnLoad();
     var onPage = geturlargs();
     if (!onPage) onPage = 1;
     var sumPage = parseInt($("#sumPage").val());
-    // 
-    // AreaBuild(onPage,sumPage);
-    // 
+    AreaBuild(onPage,sumPage);
+    
+    // $("#paging").on("click","a",function(){
+    //     var pageNum = parseInt($(this).text());
+    //     onPage = pageNum;
+    //     var send_data = $.param({ page_num:pageNum});
+    //     queryPageNum(pageNum,send_data,sumPage,onPage);
+    // });
 
-    function geturlargs() {
-        var url = window.location.search;
-        if (url.indexOf("?") == 0) {
-            var url_str = url.substr(1).split("=");
-            var url_args = url_str[1]
-        };
-        return url_args
-    }
-
-
-    /*
-    		$("#entry_list").on("click","a",function(){
-    			var pageNum = parseInt($(this).text());
-    			onPage = pageNum;
-    			var send_data = $.param({ page_num:pageNum});
-    			queryPageNum(pageNum,send_data,sumPage,onPage);
-    		});
-    */
 });
 </script>
 {% end %}
