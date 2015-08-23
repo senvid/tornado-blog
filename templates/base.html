@@ -11,7 +11,8 @@
     <!--  -->
     <!-- <link rel="stylesheet" href="{{ static_url("css/blog.css") }}" type="text/css" /> -->
     <!--  -->
-    <link rel="alternate" href="/feed" type="application/atom+xml" title="myblog"> {% block head %} {% end %}
+    <link rel="alternate" href="/feed" type="application/atom+xml" title="myblog"> 
+    {% block head %} {% end %}
     <!-- Bootstrap -->
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -37,10 +38,41 @@
     pre {
         border: 0;
     }
+/*    .container {
+    padding-right: 0px;
+    padding-left: 0px;
+    }*/
+ /*   #footer-wrap {
+        margin-right: 0px;
+        margin-left: auto;
+
+    }*/
+    /**/
+    html,body{
+        margin: 0;
+        padding:0;
+        height: 100%;
+    }
+    #body-wrap{
+        min-height: 100%;
+        position: relative;
+    }
+    #main-wrap{
+        padding-bottom: 30px;
+    }
+    #footer-wrap{
+        position: absolute;
+        bottom: 0;
+        /*width: 100%;*/
+        height: 30px;
+        
+    }
+    /**/
     </style>
 </head>
 
 <body>
+    <div id="body-wrap">
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
             <div class="navbar-header">
@@ -82,22 +114,24 @@
             </div>
         </div>
     </nav>
-    <div class="container"  style="min-height: 500px">
+    <div class="container"  style="min-height: 100%">
+    <div id="main-wrap" class="row">
     {% block body %}
     {% end %}
     </div>
-    <div class="container">
+    
+    {% block bottom %} {% end %}
+            <div id="footer-wrap" class="row">
+                <small>Powered by <a href="http://www.tornadoweb.org/">tornado</a> | senvid.</small>
+            </div>
+
+
         <!--         <div id="gotop">
             <div id="arrow"></div>
             <div class="word">TOP</div>
         </div> -->
-        <div id="footer-wrap">
-            <footer id="footer">
-                <small>Powered by <a href="http://www.tornadoweb.org/">tornado</a> | senvid.</small>
-            </footer>
-        </div>
-        {% block bottom %} {% end %}
-    </div>
+   
+
     <!-- 
 <script type="text/javascript">
     $(document).ready(function(){
@@ -114,6 +148,7 @@
     //   
 </script>
  -->
+</div>
 </body>
 
 </html>
