@@ -69,13 +69,14 @@ class PageNoFindHandler(tornado.web.RequestHandler):
 class HomeHandler(BaseHandler):
 
     def get(self):
-        entries = self.db.query("SELECT * FROM entries ORDER BY id "
-                                "DESC LIMIT %s", sp)
-        count_id = self.db.get("SELECT count(id) FROM entries;")
-        if count_id["count(id)"] % sp == 0:
-            sumPage = count_id["count(id)"] / sp
+        entries = self.db.query(
+            "SELECT * FROM entries ORDER BY id DESC LIMIT %s", sp
+            )
+        count_items = self.db.get("SELECT count(*) FROM entries")
+        if count_items["count(*)"] % sp == 0:
+            sumPage = count_items["count(*)"] / sp
         else:
-            sumPage = count_id["count(id)"] / sp + 1
+            sumPage = count_items["count(*)"] / sp + 1
         if not entries:
             self.redirect("/compose")
             return
@@ -85,8 +86,9 @@ class HomeHandler(BaseHandler):
 class AsideJsonHandler(BaseHandler):
 
     def get(self):
-        aside_title = self.db.query("SELECT title,slug FROM entries ORDER BY id "
-                                    "DESC LIMIT 6")
+        aside_title = self.db.query(
+            "SELECT title,slug FROM entries ORDER BY id DESC LIMIT 5"
+            )
         self.write(json.dumps(aside_title))
 
 
@@ -97,13 +99,15 @@ class PageHandler(BaseHandler):
             page_num = self.get_argument("page_num", 1)
             if int(page_num) > 0:
                 page_start = int(page_num) * sp - sp
-                entries = self.db.query("SELECT * FROM entries ORDER BY id "
-                                        "DESC LIMIT %s,%s" % (page_start, sp))
-                count_id = self.db.get("SELECT count(id) FROM entries;")
-                if count_id["count(id)"] % sp == 0:
-                    sumPage = count_id["count(id)"] / sp
+                entries = self.db.query(
+                    "SELECT * FROM entries ORDER BY id "
+                    "DESC LIMIT %s,%s" % (page_start, sp)
+                    )
+                count_items = self.db.get("SELECT count(*) FROM entries")
+                if count_items["count(*)"] % sp == 0:
+                    sumPage = count_items["count(*)"] / sp
                 else:
-                    sumPage = count_id["count(id)"] / sp + 1
+                    sumPage = count_items["count(*)"] / sp + 1
                 if not entries:
                     raise tornado.web.HTTPError(404)
                 self.render("home.html", entries=entries, sumPage=sumPage)
@@ -122,8 +126,10 @@ class PageJsonHandler(BaseHandler):
             page_start = int(page_num) * sp - sp
            # entries = self.db.query("SELECT * FROM entries ORDER BY published "
             #            "DESC LIMIT %s,5" , page_start)
-            entries = self.db.query("SELECT slug,title,id,published,html  FROM entries ORDER BY id "
-                                    "DESC LIMIT %s,%s" % (page_start, sp))
+            entries = self.db.query(
+                "SELECT slug,title,id,published,html  FROM entries "
+                "ORDER BY id DESC LIMIT %s,%s" % (page_start, sp)
+                )
             if not entries:
                 raise tornado.web.HTTPError(404)
             self.write(json.dumps(entries, cls=Tojson))
@@ -141,16 +147,18 @@ class EntryHandler(BaseHandler):
 class ArchiveHandler(BaseHandler):
 
     def get(self):
-        entries = self.db.query("SELECT title,published,slug FROM entries ORDER BY id "
-                                "DESC")
+        entries = self.db.query(
+            "SELECT title,published,slug FROM entries ORDER BY id DESC"
+            )
         self.render("archive.html", entries=entries)
 
 
 class FeedHandler(BaseHandler):
 
     def get(self):
-        entries = self.db.query("SELECT * FROM entries ORDER BY id "
-                                "DESC LIMIT 10")
+        entries = self.db.query(
+            "SELECT * FROM entries ORDER BY id DESC LIMIT 10"
+            )
         self.set_header("Content-Type", "application/atom+xml")
         self.render("feed.xml", entries=entries)
 
@@ -190,37 +198,37 @@ class ComposeHandler(BaseHandler):
         if title and text:
             if id:
                 entry = self.db.get(
-                    "SELECT * FROM entries WHERE id = %s", int(id))
+                    "SELECT * FROM entries WHERE id = %s", int(id)
+                    )
                 if not entry:
                     raise tornado.web.HTTPError(404)
                 slug = entry.slug
                 self.db.execute(
                     "UPDATE entries SET title = %s, markdown = %s, html = %s "
-                    "WHERE id = %s", title, text, html, int(id))
+                    "WHERE id = %s", title, text, html, int(id)
+                    )
             else:
-                '''
-                slug = unicodedata.normalize("NFKD", title).encode(
-                    "ascii", "ignore")
-                slug = re.sub(r"[^\w]+", " ", slug)
-                slug = "-".join(slug.lower().strip().split())
-                if not slug: slug = "entry"
-                '''
                 today = time.strftime("%Y%m%d")
-                max = self.db.get("SELECT MAX(id) FROM entries")
-                max_id = max["MAX(id)"]
+                # max = self.db.get("SELECT MAX(id) FROM entries")
+                # max_id = max["MAX(id)"]
+                max = self.db.get("SELECT id FROM entries ORDER BY id DESC LIMIT 1")
+                max_id = max["id"]
                 if not max_id:
                     max_id = 100
-                slug = "-".join([today, str(max_id)])
-                while True:
-                    e = self.db.get(
-                        "SELECT * FROM entries WHERE slug = %s", slug)
-                    if not e:
-                        break
-                    slug += "-2"
+                slug = "".join([today, str(max_id)])
+
+                # while True:
+                #     e = self.db.get(
+                #         "SELECT id FROM entries WHERE slug = %s", slug)
+                #     if not e:
+                #         break
+                #     slug += "-2"
+                    
                 self.db.execute(
                     "INSERT INTO entries (author_id,title,slug,markdown,html,"
                     "published) VALUES (%s,%s,%s,%s,%s,UTC_TIMESTAMP())",
-                    self.current_user.id, title, slug, text, html)
+                    self.current_user.id, title, slug, text, html
+                    )
             self.redirect("/entry/" + slug)
         else:
             self.write("Please enter a valid content")
@@ -238,7 +246,7 @@ class AuthLoginHandler(BaseHandler):
             self.set_cookie("_xsrf", mytoken)
         self.render("login.html")
 
-    #@tornado.web.asynchronous
+    #tornado.web.asynchronous
     def post(self):
         email = self.get_argument("email", None)
         password = self.get_argument("password", None)

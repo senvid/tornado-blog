@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `entries` (
   `published` datetime NOT NULL,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   KEY `published` (`published`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 ```
 
 ```
@@ -46,6 +46,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `email` varchar(50) NOT NULL UNIQUE,
   `password` varchar(50) NOT NULL,
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 ```
 
