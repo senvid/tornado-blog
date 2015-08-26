@@ -158,7 +158,7 @@ header {
     margin-top: 20px;
 }
 
-.compose_form .markdown {
+.compose_form .content {
     height: 500px;
     width: 100%;
     padding: 5px;

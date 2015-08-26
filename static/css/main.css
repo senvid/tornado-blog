@@ -34,7 +34,7 @@ pre {
     border:#CCCCCC;
 }
 
-.entry_html {
+.entry_content {
     text-overflow: ellipsis;
     overflow:hidden;
 }

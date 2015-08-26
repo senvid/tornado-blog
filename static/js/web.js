@@ -161,24 +161,6 @@ function AreaBuild(begin, end) {
     };
 }
 
-// function AreaBuild(begin, end) {
-//     var count = 0;
-//     if (begin <= 0) { return };
-//     for (var i = begin - 1; i <= end; i++) {
-//         if (i == 0) {
-//             i = 1;
-//             var pageArea = '<span class="rebulid_a">' + i + '</span>';
-//         } else if (begin == i && begin != 1) {
-//             var pageArea = '<span class="rebulid_a">' + i + '</span>';
-//         } else {
-//             var pageArea = '<a class="rebulid_a" href="/page?page_num=' + i + '">' + i + '</a>';
-//         };
-//         $("#paging").append(pageArea);
-//         count++;
-//         if (count >= 3) break;
-//     };
-// }
-
 
 //aside 
 function asideGet() {

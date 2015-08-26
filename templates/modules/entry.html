@@ -3,13 +3,15 @@
         <h3 class="panel-title"><a href="/entry/{{ entry.slug }}">{{ entry.title }}</a></h3>
     </div>
     <div class="panel-body">
-        <div class="entry_html">
-            {% raw entry.html %}
+        <div class="entry_content">
+            {% raw entry.content %}
         </div>
         <div class="date-wrap">
             <p class="date">{{ locale.format_date(entry.published, full_format=True, shorter=True) }}</p>
         {% if current_user %}
             <a class="entry_a" href="/compose?id={{ entry.id }}">{{ _("Edit") }}</a>
+        {% else %}
+            <a class="entry_a" href="/entry/{{ entry.slug }}?next=y">Next</a>
         {% end %}
         </div>
     </div>

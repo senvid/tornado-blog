@@ -19,10 +19,7 @@ try:
     import torndb
 except ImportError:
     logging.warn("no module named torndb")
-try:
-    import markdown
-except ImportError:
-    logging.warn("no module named markdown")
+
 
 define("port", default=8000, help="run on the given port", type=int)
 define("mysql_host", default="192.168.20.10:3306", help="blog database host")
@@ -127,22 +124,35 @@ class PageJsonHandler(BaseHandler):
            # entries = self.db.query("SELECT * FROM entries ORDER BY published "
             #            "DESC LIMIT %s,5" , page_start)
             entries = self.db.query(
-                "SELECT slug,title,id,published,html  FROM entries "
-                "ORDER BY id DESC LIMIT %s,%s" % (page_start, sp)
+                "SELECT * FROM entries ORDER BY id DESC LIMIT %s, %s" % (page_start, sp)
                 )
             if not entries:
                 raise tornado.web.HTTPError(404)
             self.write(json.dumps(entries, cls=Tojson))
 
+class TestHandler(BaseHandler):
+    def get(self):
+        argus = self.get_argument("t", None)
+        if argus:
+            self.write(argus)
+        else:
+            self.write("nothing")
 
 class EntryHandler(BaseHandler):
 
     def get(self, slug):
-        entry = self.db.get("SELECT * FROM entries WHERE slug = %s", slug)
+        nextEntry = self.get_argument("next", None)
+        if nextEntry == "y":
+            entry =self.db.get(
+                "SELECT * FROM entries WHERE id < (SELECT id FROM entries "
+                "WHERE slug = %s) ORDER BY id DESC LIMIT 1", slug)
+        else:
+            entry = self.db.get("SELECT * FROM entries WHERE slug = %s", slug)
         if not entry:
-            raise tornado.web.HTTPError(404)
+            self.redirect("/")
+            return
         self.render("entry.html", entry=entry)
-
+  
 
 class ArchiveHandler(BaseHandler):
 
@@ -170,8 +180,8 @@ class EntryModule(tornado.web.UIModule):
 
 class ArticleModule(tornado.web.UIModule):
 
-    def render(self):
-        return self.render_string("modules/article.html")
+    def render(self,entry):
+        return self.render_string("modules/article.html",entry=entry)
 
 class AsideModule(tornado.web.UIModule):
 
@@ -193,9 +203,8 @@ class ComposeHandler(BaseHandler):
     def post(self):
         id = self.get_argument("id", None)
         title = self.get_argument("title")
-        text = self.get_argument("markdown")
-        html = markdown.markdown(text)
-        if title and text:
+        content = self.get_argument("content")
+        if title and content:
             if id:
                 entry = self.db.get(
                     "SELECT * FROM entries WHERE id = %s", int(id)
@@ -204,8 +213,8 @@ class ComposeHandler(BaseHandler):
                     raise tornado.web.HTTPError(404)
                 slug = entry.slug
                 self.db.execute(
-                    "UPDATE entries SET title = %s, markdown = %s, html = %s "
-                    "WHERE id = %s", title, text, html, int(id)
+                    "UPDATE entries SET title = %s, content = %s"
+                    "WHERE id = %s", title, content, int(id)
                     )
             else:
                 today = time.strftime("%Y%m%d")
@@ -225,9 +234,9 @@ class ComposeHandler(BaseHandler):
                 #     slug += "-2"
                     
                 self.db.execute(
-                    "INSERT INTO entries (author_id,title,slug,markdown,html,"
-                    "published) VALUES (%s,%s,%s,%s,%s,UTC_TIMESTAMP())",
-                    self.current_user.id, title, slug, text, html
+                    "INSERT INTO entries (author_id,title,slug,content,html,"
+                    "published) VALUES (%s,%s,%s,%s,UTC_TIMESTAMP())",
+                    self.current_user.id, title, slug, content
                     )
             self.redirect("/entry/" + slug)
         else:
@@ -338,7 +347,8 @@ app = tornado.web.Application([
     (r"/login", AuthLoginHandler),
     (r"/logout", AuthLogoutHandler),
     (r"/delete", DeleteHandler),
-    (r"/test", PageJsonHandler),
+    (r"/pagejson", PageJsonHandler),
+    (r"/test", TestHandler),
     (r"/aside", AsideJsonHandler),
     (r"/about", AboutHandler),
     (r".*", PageNoFindHandler),

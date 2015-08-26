@@ -18,7 +18,7 @@
             <input name="title" type="text" class="title form-control" value="{{ entry.title if entry else "" }}" autofocus required/>
         </div>
         <div class="form-group">
-            <textarea name="markdown" class="markdown form-control" rows="6" cols="50" required >{{ entry.markdown if entry else "" }}</textarea>
+            <textarea name="content" class="content form-control" rows="6" cols="50" required >{{ entry.content if entry else "" }}</textarea>
         </div>
         <div>
             <button type="submit" class="btn btn-success submit">{{ _("Save changes") if entry else _("Publish post") }}</button>
@@ -35,11 +35,11 @@
 {% end %}
 {% block bottom %}
 <script type="text/javascript">
-    // localSave(".markdown",".local_log");
+    // localSave(".content",".local_log");
     // localSave(".title");
     window.onload=function() {
         // ckeditor
-        CKEDITOR.replace('markdown');
+        CKEDITOR.replace('content');
     }
 
     
