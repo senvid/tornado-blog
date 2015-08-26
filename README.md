@@ -2,14 +2,14 @@
 
 
 ###介绍
------
+
 简单博客程序.
 
 参考了tornado中的实例.
 
 
 ###依赖
------
+
 * python2.7
 * tornado
 * torndb
@@ -18,7 +18,7 @@
 
 
 ###使用的css js
------
+
 - [x] jQuery v2.1.1
 - [x] jquery.scrollTo-1.1.13
 - [x] jsSHA/1.6.0/sha1.js
@@ -28,7 +28,7 @@
 
 
 ###MySQL表结构
------
+
 ```sql
 CREATE TABLE IF NOT EXISTS users(
   uid int(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
