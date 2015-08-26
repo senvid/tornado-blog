@@ -34,13 +34,26 @@ pre {
     border:#CCCCCC;
 }
 
+.entry_html {
+    text-overflow: ellipsis;
+    overflow:hidden;
+}
+.date-wrap {
+    clear:both;
+}
+.date {
+    margin-top:30px;
+    float:left;
+}
+
 .entry_a {
-    display: block;
-    float: right;
+    float:right;
     border: 1px solid #5CB85C;
     padding: 5px 15px;
     border-radius: 5px;
+    margin-top:25px;
 }
+
 section.inner{
     border:1px solid rgba(0, 0, 0, 0.2);
     border-radius:8px;
