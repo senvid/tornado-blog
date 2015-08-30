@@ -33,9 +33,9 @@
 CREATE TABLE IF NOT EXISTS users(
   uid int(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   email varchar(30) NOT NULL, 
-  password varchar(30) NOT NULL,
+  password varchar(50) NOT NULL,
   nickname varchar(10) NOT NULL,
-  INDEX email (email)
+  INDEX (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=2;
 ```
 

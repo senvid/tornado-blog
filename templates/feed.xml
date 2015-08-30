@@ -3,8 +3,8 @@
         <!-- ATOM 聚合接口 -->
         {% set date_format = "%Y-%m-%dT%H:%M:%SZ" %}
         <title>{{ handler.settings["blog_title"] }}</title>
-        {% if len(entries) > 0 %}
-        <updated>{{ max(entry.updated for entry in entries).strftime(date_format) }}</updated>
+        {% if len(articles) > 0 %}
+        <updated>{{ max(article.updated for article in articles).strftime(date_format) }}</updated>
         {% else %}
         <updated>{{ datetime.datetime.utcnow().strftime(date_format) }}</updated>
         {% end %}
@@ -14,16 +14,16 @@
         <author>
             <name>{{ handler.settings["blog_title"] }}</name>
         </author>
-        {% for entry in entries %}
-        <entry>
-            <id>http://{{ request.host }}/entry/{{ entry.slug }}</id>
-            <title type="text">{{ entry.title }}</title>
-            <link href="http://{{ request.host }}/entry/{{ entry.slug }}" rel="alternate" type="text/html" />
-            <updated>{{ entry.updated.strftime(date_format) }}</updated>
-            <published>{{ entry.published.strftime(date_format) }}</published>
+        {% for article in articles %}
+        <article>
+            <id>http://{{ request.host }}/article/{{ article.slug }}</id>
+            <title type="text">{{ article.title }}</title>
+            <link href="http://{{ request.host }}/article/{{ article.slug }}" rel="alternate" type="text/html" />
+            <updated>{{ article.updated.strftime(date_format) }}</updated>
+            <published>{{ article.published.strftime(date_format) }}</published>
             <content type="xhtml" xml:base="http://{{ request.host }}/">
-                <div xmlns="http://www.w3.org/1999/xhtml">{% raw entry.content %}</div>
+                <div xmlns="http://www.w3.org/1999/xhtml">{% raw article.content %}</div>
             </content>
-        </entry>
+        </article>
         {% end %}
     </feed>

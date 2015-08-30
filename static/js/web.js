@@ -151,8 +151,8 @@ function AreaBuild(begin, end) {
         } else if (begin == i && begin != 1) {
             var pageArea = '<li class="active"><a href="#">' + i + '</a></li>';
         } else {
-            // var pageArea = '<a class="rebulid_a" href="/page?page_num=' + i + '">' + i + '</a>';
-            var pageArea = '<li><a class="ready" href="/page?page_num=' + i + '">' + i + '</a></li>';
+            // var pageArea = '<a class="rebulid_a" href="/page?page=' + i + '">' + i + '</a>';
+            var pageArea = '<li><a class="ready" href="/page?page=' + i + '">' + i + '</a></li>';
         };
 
         $("#paging").append(pageArea);
