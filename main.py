@@ -22,7 +22,7 @@ except ImportError:
 
 
 define("port", default=8000, help="run on the given port", type=int)
-define("mysql_host", default="192.168.20.10:3306", help="blog database host")
+define("mysql_host", default="localhost:3306", help="blog database host")
 define("mysql_database", default="blog", help="blog database name")
 define("mysql_user", default="blog", help="blog database user")
 define("mysql_password", default="blog", help="blog database password")
