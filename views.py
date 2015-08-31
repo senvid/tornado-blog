@@ -133,7 +133,7 @@ class TestHandler(BaseHandler):
             self.write("nothing")
 
 
-class TopticHandler(BaseHandler):
+class TopicHandler(BaseHandler):
 
     def get(self, slug):
         nextEntry = self.get_argument("next", None)
@@ -147,7 +147,7 @@ class TopticHandler(BaseHandler):
         if not article:
             self.redirect("/")
             return
-        self.render("toptic.html", article=article)
+        self.render("topic.html", article=article)
 
 
 class ArchiveHandler(BaseHandler):
@@ -237,7 +237,7 @@ class ComposeHandler(BaseHandler):
                     "published) VALUES (%s,%s,%s,%s,UTC_TIMESTAMP())",
                     self.current_user.uid, title, slug, content
                 )
-            self.redirect("/toptic/" + slug)
+            self.redirect("/topic/" + slug)
         else:
             self.write("Please enter a valid title and content")
 
@@ -296,3 +296,4 @@ class DeleteHandler(BaseHandler):
                 "DELETE FROM articles WHERE title = %s and slug = %s ",
                 title_t, slug_s.split("/")[2])
             self.write("deleted")
+
