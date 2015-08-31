@@ -1,28 +1,28 @@
 //mouseover mouseout
 function mouse_over_out() {
-        //
-        $(".edit a").mouseover(function() {
-            $(this).css({
-                "background": "#3D8DE2",
-                "cursor": "pointer"
-            });
+    //
+    $(".edit a").mouseover(function() {
+        $(this).css({
+            "background": "#3D8DE2",
+            "cursor": "pointer"
         });
-        $(".edit a").mouseout(function() {
-            $(this).css("background", "#C8C6C6");
+    });
+    $(".edit a").mouseout(function() {
+        $(this).css("background", "#C8C6C6");
+    });
+    //   
+    $("#paging .ready").mouseover(function() {
+        $(this).css({
+            "border-color": "#0CC65B",
+            "cursor": "pointer"
         });
-        //   
-        $("#paging .ready").mouseover(function() {
-            $(this).css({
-                "border-color": "#0CC65B",
-                "cursor": "pointer"
-            });
-        });
-        $("#paging .ready").mouseout(function() {
-            $(this).css("border-color", "#CCCCCC");
-        });
-        //
-    }
-    //location:目标地点 obj 滚动的对象
+    });
+    $("#paging .ready").mouseout(function() {
+        $(this).css("border-color", "#CCCCCC");
+    });
+    //
+}
+//location:目标地点 obj 滚动的对象
 function show_hide_scroll(location, obj) {
     $(window).scroll(function() {
         if ($(this).scrollTop() > 100) {
@@ -142,10 +142,12 @@ function rebuildPageArea(pageNum, sumPage, onPage) {
 
 function AreaBuild(begin, end) {
     var count = 0;
-    if (begin < 1) { return };
+    if (begin < 1) {
+        return
+    };
     for (var i = begin - 1; i <= end; i++) {
         if (i == 0) {
-            i =1;
+            i = 1;
             //var pageArea = '<span class="rebulid_a">' + i + '</span>';
             var pageArea = '<li class="active"><a href="#">' + i + '</a></li>';
         } else if (begin == i && begin != 1) {
@@ -189,3 +191,32 @@ function geturlargs() {
     };
     return url_args
 }
+
+//getCookie
+function getCookie(name) {
+    var cookie_re = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+    return cookie_re ? cookie_re[1] : undefine;
+};
+
+//delete article
+$(".archive_delete").click(function() {
+    var title_t = $(this).parent().parent().find("a").text();
+    var slug_s = $(this).parent().parent().find("a").attr("href");
+    var data = {
+        title: title_t,
+        slug: slug_s
+    };
+
+    data._xsrf = getCookie("_xsrf");
+    var this_box = $(this);
+
+    $.post("/delete",
+        $.param(data),
+        function(msg, status) {
+            if (msg == "deleted" && status == "success") {
+                this_box.parent().hide(1000);
+                this_box.parent().parent().hide(1800);
+            }
+        }
+    )
+});

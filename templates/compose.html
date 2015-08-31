@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% block head %}
 
-<link rel="stylesheet" type="text/css" href="">
-<script type="text/javascript" src="{{ static_url("ckeditor/ckeditor.js") }}"></script>
 <style type="text/css">
     #nav-head{
         margin-bottom: 20px;
@@ -21,6 +19,14 @@
             <textarea name="content" class="content form-control" rows="6" cols="50" required >{{ article.content if article else "" }}</textarea>
         </div>
         <div>
+            <input name="article_tag_id" type="text" class="article_tag_id form-control" value="{{ article.article_tag_id if article else "" }}"> 
+        </div>
+        <select class="form-control">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+        </select>
+        <div>
             <button type="submit" class="btn btn-success submit">{{ _("Save changes") if article else _("Publish post") }}</button>
             &nbsp;<a href="{{ "/article/" + article.slug if article else "/" }}">{{ _("Cancel") }}</a>
         </div>
@@ -34,6 +40,7 @@
 </div>
 {% end %}
 {% block bottom %}
+<script type="text/javascript" src="{{ static_url("ckeditor/ckeditor.js") }}"></script>
 <script type="text/javascript">
     // localSave(".content",".local_log");
     // localSave(".title");

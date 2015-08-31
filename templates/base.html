@@ -16,14 +16,7 @@
         <a href="http://www.google.cn/chrome/"><h2>chrome</h2></a>
         <a href="www.mozilla.org"><h2>firefox</h2></a>
     <![endif]-->
-    <script type="text/javascript" src="{{ static_url("js/jquery-2.1.1.min.js") }}"></script>
-    <script type="text/javascript" src="{{ static_url("bootstrap-3.3.5/js/bootstrap.min.js") }}"></script>
-    <script type="text/javascript" src="{{ static_url("js/web.js") }}"></script>
-    <!--  -->
     <link rel="stylesheet" href="{{ static_url("css/main.css") }}" type="text/css" />
-    <!--  -->
-    <!-- <script type="text/javascript" src="{{ static_url("js/jquery.scrollTo-1.1.13.min.js") }}">
-    </script> -->
 
     {% block head %} 
     {% end %}
@@ -82,14 +75,18 @@
             </p>
         </div>
     </footer>
-    {% block bottom %} 
-    {% end %}
+
 <!-- <div id="gotop">
     <div id="arrow"></div>
     <div class="word">TOP</div>
 </div> -->
 </body>
-
+<script type="text/javascript" src="{{ static_url("js/jquery-2.1.1.min.js") }}"></script>
+<script type="text/javascript" src="{{ static_url("bootstrap-3.3.5/js/bootstrap.min.js") }}"></script>
+<script type="text/javascript" src="{{ static_url("js/web.js") }}"></script>
+<!--  -->
+<!-- <script type="text/javascript" src="{{ static_url("js/jquery.scrollTo-1.1.13.min.js") }}">
+</script> -->
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -103,6 +100,6 @@ $(document).ready(function(){
 });
    
 </script>
-
-
+{% block bottom %} 
+{% end %}
 </html>

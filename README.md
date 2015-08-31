@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS tags(
 CREATE TABLE IF NOT EXISTS articles(
   id int(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   slug varchar(50) NOT NULL,
-  title varchar(50) NOT NULL,
+  title varchar(100) NOT NULL,
   content mediumtext NOT NULL,
   published datetime NOT NULL,
   updated timestamp NOT NULL DEFAULT current_timestamp on update current_timestamp,
