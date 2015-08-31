@@ -51,6 +51,36 @@ body {
 </style>
 {% end %} 
 {% block body %}
+
+<!-- <div id="login_outer">
+    <form id="login_form" action="" method="post" autocomplete="on">
+        <input id="email" type="email" name="email" required="required" pattern="[\w]+[@][A-z0-9]+\.[A-z]+" placeholder="Email" />
+        <br />
+        <input id="password" type="password" name="password" required="required" placeholder="Password" />
+        <br />
+        <input id="submit" type="submit" name="login" value="sign in" style=" cursor: pointer;" /> -->
+<!--module xsrf_form_html() 已使用ajax替代-->
+<!--  -->
+<!--     </form>
+</div>
+ -->
+<div class="container" id="login_outer">
+    <form class="form-signin" id="login_form" action="" method="post" autocomplete="on">
+        <label for="email" class="sr-only">Email</label>
+        <input type="email" id="email" name="email" class="form-control" placeholder="Email" required autofocus pattern="[\w]+[@][A-z0-9]+\.[A-z]+">
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+        </div>
+        <button id="submit" class="btn  btn-success btn-block" type="submit">Sign in</button>
+    </form>
+</div>
+{% end %}
+
+{% block bottom %}
 <script type="text/javascript" src="{{ static_url("js/sha1.js") }}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -58,7 +88,7 @@ $(document).ready(function() {
         var mypassword = $("#password").val();
         var sha1obj = new jsSHA(mypassword, "TEXT");
         var sha1password = sha1obj.getHash("SHA-1", "HEX");
-
+        console.log(sha1password);
         function getCookie(name) {
             var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
             return r ? r[1] : undefined;
@@ -89,30 +119,4 @@ $(document).ready(function() {
     });
 })
 </script>
-<!-- <div id="login_outer">
-    <form id="login_form" action="" method="post" autocomplete="on">
-        <input id="email" type="email" name="email" required="required" pattern="[\w]+[@][A-z0-9]+\.[A-z]+" placeholder="Email" />
-        <br />
-        <input id="password" type="password" name="password" required="required" placeholder="Password" />
-        <br />
-        <input id="submit" type="submit" name="login" value="sign in" style=" cursor: pointer;" /> -->
-<!--module xsrf_form_html() 已使用ajax替代-->
-<!--  -->
-<!--     </form>
-</div>
- -->
-<div class="container" id="login_outer">
-    <form class="form-signin" id="login_form" action="" method="post" autocomplete="on">
-        <label for="email" class="sr-only">Email</label>
-        <input type="email" id="email" name="email" class="form-control" placeholder="Email" required autofocus pattern="[\w]+[@][A-z0-9]+\.[A-z]+">
-        <label for="password" class="sr-only">Password</label>
-        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
-        <button id="submit" class="btn  btn-success btn-block" type="submit">Sign in</button>
-    </form>
-</div>
 {% end %}

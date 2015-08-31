@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% block head %}
 
-<link rel="stylesheet" type="text/css" href="">
-<script type="text/javascript" src="{{ static_url("ckeditor/ckeditor.js") }}"></script>
 <style type="text/css">
     #nav-head{
         margin-bottom: 20px;
@@ -15,17 +13,25 @@
     <form action="{{ request.path }}" method="post" class="compose_form form-nav">
         <div class="form-group">
             <label>Title</label>
-            <input name="title" type="text" class="title form-control" value="{{ entry.title if entry else "" }}" autofocus required/>
+            <input name="title" type="text" class="title form-control" value="{{ article.title if article else "" }}" autofocus required/>
         </div>
         <div class="form-group">
-            <textarea name="content" class="content form-control" rows="6" cols="50" required >{{ entry.content if entry else "" }}</textarea>
+            <textarea name="content" class="content form-control" rows="6" cols="50" required >{{ article.content if article else "" }}</textarea>
         </div>
         <div>
-            <button type="submit" class="btn btn-success submit">{{ _("Save changes") if entry else _("Publish post") }}</button>
-            &nbsp;<a href="{{ "/entry/" + entry.slug if entry else "/" }}">{{ _("Cancel") }}</a>
+            <input name="article_tag_id" type="text" class="article_tag_id form-control" value="{{ article.article_tag_id if article else "" }}"> 
         </div>
-        {% if entry %}
-          <input type="hidden" name="id" value="{{ entry.id }}"/>
+        <select class="form-control">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+        </select>
+        <div>
+            <button type="submit" class="btn btn-success submit">{{ _("Save changes") if article else _("Publish post") }}</button>
+            &nbsp;<a href="{{ "/article/" + article.slug if article else "/" }}">{{ _("Cancel") }}</a>
+        </div>
+        {% if article %}
+          <input type="hidden" name="id" value="{{ article.id }}"/>
         {% else %}
             <small class="local_log"></small>
         {% end %}
@@ -34,6 +40,7 @@
 </div>
 {% end %}
 {% block bottom %}
+<script type="text/javascript" src="{{ static_url("ckeditor/ckeditor.js") }}"></script>
 <script type="text/javascript">
     // localSave(".content",".local_log");
     // localSave(".title");
