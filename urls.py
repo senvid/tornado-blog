@@ -11,12 +11,12 @@ settings = dict(
     template_path=os.path.join(os.path.dirname(__file__), "templates"),
     static_path=os.path.join(os.path.dirname(__file__), "static"),
     ui_modules={
-                "Entry": EntryModule,
-                "Article": ArticleModule,
-                "Aside": AsideModule,
-            },
+        "Entry": EntryModule,
+        "Article": ArticleModule,
+        "Aside": AsideModule,
+    },
     xsrf_cookies=True,
-    cookie_secret="swliOTY5NzJkYTVlMTU0OTAwMTdlNjgzMTA5M2U3OGQ5NDIxZmU3Mg16",
+    cookie_secret="re7GpEHbTTih7NQOvGrtx05Y/1PYhkbFqiDCdY2Rgzo=",
     login_url="/login",
     debug=True,
     autoreload=True

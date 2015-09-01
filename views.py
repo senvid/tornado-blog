@@ -195,8 +195,11 @@ class ComposeHandler(BaseHandler):
         article = None
         if id:
             article = self.db.get(
-                "SELECT * FROM articles WHERE id = %s", int(id))
-        self.render("compose.html", article=article)
+                "SELECT * FROM articles WHERE id = %s", id)
+            tags = self.db.query(
+                "SELECT * FROM tags"
+                )
+        self.render("compose.html", article=article, tags=tags)
 
     @tornado.web.authenticated
     def post(self):
@@ -206,14 +209,14 @@ class ComposeHandler(BaseHandler):
         if title and content:
             if id:
                 article = self.db.get(
-                    "SELECT * FROM articles WHERE id = %s", int(id)
+                    "SELECT * FROM articles WHERE id = %s", id
                 )
                 if not article:
                     raise tornado.web.HTTPError(404)
                 slug = article.slug
                 self.db.execute(
                     "UPDATE articles SET title = %s, content = %s"
-                    "WHERE id = %s", title, content, int(id)
+                    "WHERE id = %s", title, content, id
                 )
             else:
                 today = time.strftime("%Y%m%d")

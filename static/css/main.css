@@ -54,6 +54,34 @@ pre {
     margin-top:25px;
 }
 
+/* #select-tag {
+    clear:both
+} */
+#compose-tag {
+    width:20%;
+    float:left;
+}
+
+#compose-select {
+    width:15%;
+    display: inline-block;
+    margin-left:15px;
+}
+
+/*.article_tag_id {
+    float: left;
+}
+
+.compose-select {
+    float:right;
+}*/
+
+#compose-form {
+    margin-bottom:30px;
+}
+#compose-button {
+    margin-left:-15px;
+}
 section.inner{
     border:1px solid rgba(0, 0, 0, 0.2);
     border-radius:8px;
@@ -79,6 +107,7 @@ body {
 .footer {
     position: absolute;
     bottom: 0;
+    margin-top:50px;
     width: 100%;
     /* Set the fixed height of the footer here */
     height: 60px;
