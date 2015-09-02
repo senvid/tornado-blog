@@ -195,7 +195,9 @@ class ComposeHandler(BaseHandler):
         article = None
         if id:
             article = self.db.get(
-                "SELECT * FROM articles WHERE id = %s", id)
+                "SELECT * FROM articles INNER JOIN tags ON id = %s"
+                "AND article_tag_id = tag_id", id
+                )
             tags = self.db.query(
                 "SELECT * FROM tags"
                 )
