@@ -195,12 +195,10 @@ class ComposeHandler(BaseHandler):
         article = None
         if id:
             article = self.db.get(
-                "SELECT * FROM articles INNER JOIN tags ON id = %s"
-                "AND article_tag_id = tag_id", id
+                "SELECT * FROM articles LEFT JOIN tags ON "
+                "article_tag_id = tag_id WHERE id = %s", id
                 )
-            tags = self.db.query(
-                "SELECT * FROM tags"
-                )
+        tags = self.db.query("SELECT * FROM tags")
         self.render("compose.html", article=article, tags=tags)
 
     @tornado.web.authenticated
@@ -208,6 +206,20 @@ class ComposeHandler(BaseHandler):
         id = self.get_argument("id", None)
         title = self.get_argument("title")
         content = self.get_argument("content")
+        #tag not id  need to converted
+        article_tag_id = self.get_argument("article_tag_id","NULL")
+        if article_tag_id:
+            get_tag = self.db.get(
+                    "SELECT * FROM tags WHERE tag_type =%s", article_tag_id
+                )
+            if not get_tag:
+                self.db.execute(
+                    "INSERT INTO tags(tag_type) values(%s)",article_tag_id
+                    )
+                get_tag = self.db.get(
+                    "select @@identity as tag_id"
+                    )
+            article_tag_id = get_tag.tag_id
         if title and content:
             if id:
                 article = self.db.get(
@@ -217,30 +229,23 @@ class ComposeHandler(BaseHandler):
                     raise tornado.web.HTTPError(404)
                 slug = article.slug
                 self.db.execute(
-                    "UPDATE articles SET title = %s, content = %s"
-                    "WHERE id = %s", title, content, id
+                    "UPDATE articles SET title = %s, content = %s,"
+                    "article_tag_id = %s WHERE id = %s", 
+                    title, content, article_tag_id, id
                 )
             else:
                 today = time.strftime("%Y%m%d")
-                # max = self.db.get("SELECT MAX(id) FROM articles")
-                # max_id = max["MAX(id)"]
                 max = self.db.get(
                     "SELECT id FROM articles ORDER BY id DESC LIMIT 1")
                 max_id = max["id"]
                 if not max_id:
                     max_id = 100
                 slug = "".join([today, str(max_id)])
-
-                # while True:
-                #     e = self.db.get(
-                #         "SELECT id FROM articles WHERE slug = %s", slug)
-                #     if not e:
-                #         break
-                #     slug += "-2"
                 self.db.execute(
-                    "INSERT INTO articles (article_uid,title,slug,content,"
-                    "published) VALUES (%s,%s,%s,%s,UTC_TIMESTAMP())",
-                    self.current_user.uid, title, slug, content
+                    "INSERT INTO articles (article_uid, title, slug, content,"
+                    "article_tag_id, published) VALUES (%s,%s,%s,%s,"
+                    "%s,UTC_TIMESTAMP())",
+                    self.current_user.uid, title, slug, content, article_tag_id
                 )
             self.redirect("/topic/" + slug)
         else:

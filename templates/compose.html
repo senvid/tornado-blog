@@ -22,18 +22,17 @@
        
         <div id="compose-tag" class="form-group">
          <label class="sr-only" for="compose-tags">Tag</label>
-            <input name="article_tag_id" type="text" id="compose-tags" class="form-control" value="{{ article.tag_type if article else "" }}">
+            <input name="article_tag_id" type="text" id="compose-tags" class="form-control" value="{{ article.tag_type if article and article.article_tag_id else "" }}">
         </div>
         <div id="compose-select" class="form-group">
             <label class="sr-only" for="compose-selects">tag</label>
             <select  id="compose-selects" class="form-control">
-            {% for tag in tags%}
-              <option>{{ tag.tag_type }}</option> 
-            {% end %} 
-              <option>tag</option>
-              <option>mysql</option>
-              <option>aaaaaa</option>
-            
+                <option selected="selected">标签</option>
+                {% if tags %}
+                {% for tag in tags %}
+                <option>{{ tag.tag_type }}</option>
+                {% end %}
+                {% end %}
             </select>
         </div>
         
@@ -62,9 +61,17 @@
     }
 </script>
 <script type="text/javascript">
-    //获取所有tag
-    //设置option
     //onchange事件
+    $("#compose-selects").change(function () {
+        var str = $("#compose-selects option:selected").text();
+        var firstTag = $("#compose-selects option:first-child").val();
+        // var firstTag = document.getElementById("compose-selects").options[0].value;
+        if (str != firstTag) {
+            $("#compose-tags").val(str);
+        }else{
+            $("#compose-tags").val("");
+        };
+    });
 
     //post
 </script>
