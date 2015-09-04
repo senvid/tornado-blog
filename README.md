@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS tags(
 ```
 
 ```sql
-CREATE TABLE IF NOT EXISTS articles(
+CREATE TABLE IF NOT EXISTS posts(
   id int(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   slug varchar(50) NOT NULL,
   title varchar(100) NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS articles(
   INDEX (published),
   FOREIGN KEY (article_uid) REFERENCES users (uid),
   FOREIGN KEY (article_tag_id) REFERENCES tags (tag_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
 ```sql

@@ -16,7 +16,7 @@ try:
     import torndb
 except ImportError:
     logging.warn("no module named torndb")
-    
+
 # articles per page
 sp = 3
 
@@ -116,7 +116,8 @@ class PageJsonHandler(BaseHandler):
            # articles = self.db.query("SELECT * FROM articles ORDER BY published "
             #            "DESC LIMIT %s,5" , page_start)
             articles = self.db.query(
-                "SELECT * FROM articles ORDER BY id DESC LIMIT %s, %s", page_start, sp
+                "SELECT * FROM articles ORDER BY id DESC LIMIT %s, %s",
+                page_start, sp
             )
             if not articles:
                 raise tornado.web.HTTPError(404)
@@ -197,7 +198,7 @@ class ComposeHandler(BaseHandler):
             article = self.db.get(
                 "SELECT * FROM articles LEFT JOIN tags ON "
                 "article_tag_id = tag_id WHERE id = %s", id
-                )
+            )
         tags = self.db.query("SELECT * FROM tags")
         self.render("compose.html", article=article, tags=tags)
 
@@ -206,20 +207,22 @@ class ComposeHandler(BaseHandler):
         id = self.get_argument("id", None)
         title = self.get_argument("title")
         content = self.get_argument("content")
-        #tag not id  need to converted
-        article_tag_id = self.get_argument("article_tag_id","NULL")
-        if article_tag_id:
+        # tag not id  need to converted
+        article_tag = self.get_argument("article_tag", "0")
+        article_tag_id = 0
+        if article_tag:
             get_tag = self.db.get(
-                    "SELECT * FROM tags WHERE tag_type =%s", article_tag_id
+                "SELECT * FROM tags WHERE tag_type =%s", article_tag
+            )
+            if get_tag:
+                article_tag_id = str(get_tag["tag_id"])
+            else:
+                get_tag = self.db.execute(
+                    "INSERT INTO tags(tag_type) values(%s);SELECT @@IDENTITY",
+                    article_tag
                 )
-            if not get_tag:
-                self.db.execute(
-                    "INSERT INTO tags(tag_type) values(%s)",article_tag_id
-                    )
-                get_tag = self.db.get(
-                    "select @@identity as tag_id"
-                    )
-            article_tag_id = get_tag.tag_id
+                # notice here different
+                article_tag_id = str(get_tag)
         if title and content:
             if id:
                 article = self.db.get(
@@ -230,7 +233,7 @@ class ComposeHandler(BaseHandler):
                 slug = article.slug
                 self.db.execute(
                     "UPDATE articles SET title = %s, content = %s,"
-                    "article_tag_id = %s WHERE id = %s", 
+                    "article_tag_id = %s WHERE id = %s",
                     title, content, article_tag_id, id
                 )
             else:
@@ -271,7 +274,9 @@ class AuthLoginHandler(BaseHandler):
 
         if email and password:
             author_uid = self.db.get(
-                "SELECT uid FROM users WHERE email = %s and password = %s", email, password)
+                "SELECT uid FROM users WHERE email = %s and password = %s",
+                email, password
+            )
             if author_uid:
                 self.set_secure_cookie("blog_user", str(author_uid['uid']))
                 # self.redirect("/")
@@ -306,4 +311,3 @@ class DeleteHandler(BaseHandler):
                 "DELETE FROM articles WHERE title = %s and slug = %s ",
                 title_t, slug_s.split("/")[2])
             self.write("deleted")
-
