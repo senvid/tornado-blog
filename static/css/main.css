@@ -4,6 +4,9 @@ body {
 #nav-head {
     margin-bottom: 80px;
 }
+#navbar a {
+    display: inline-block;
+}
 
 pre {
     border: 0;
@@ -54,9 +57,11 @@ pre {
     margin-top:25px;
 }
 
-/* #select-tag {
-    clear:both
-} */
+#not_found {
+    text-align: center;
+    margin: 20px auto;
+}
+
 #compose-tag {
     width:20%;
     float:left;
@@ -68,19 +73,12 @@ pre {
     margin-left:15px;
 }
 
-/*.article_tag {
-    float: left;
-}
-
-.compose-select {
-    float:right;
-}*/
-
 #compose-form {
     margin-bottom:30px;
 }
 #compose-button {
     margin-left:-15px;
+    
 }
 section.inner{
     border:1px solid rgba(0, 0, 0, 0.2);
@@ -91,6 +89,14 @@ section.inner{
 .archive_delete{
     float:right;
 }
+
+/*-----------------------------*/
+/* Aside */
+#tag_a a {
+    display: block;
+    margin-bottom: 10px;
+}
+
 
 /*----------------------------*/
 /*footer*/

@@ -22,11 +22,13 @@
        
         <div id="compose-tag" class="form-group">
          <label class="sr-only" for="compose-tags">Tag</label>
-            <input name="article_tag" type="text" id="compose-tags" class="form-control" value="{{ article.tag_type if article and article.article_tag_id else "" }}">
+            <input name="article_tag" type="text" id="compose-tags" class="form-control" placeholder="add tag" value="{{ article.tag_type if article and article.article_tag_id else "" }}">
         </div>
         <div id="compose-select" class="form-group">
+        
             <label class="sr-only" for="compose-selects">tag</label>
             <select  id="compose-selects" class="form-control">
+
                 <option selected="selected">标签</option>
                 {% if tags %}
                 {% for tag in tags %}
@@ -34,11 +36,14 @@
                 {% end %}
                 {% end %}
             </select>
+
         </div>
-        
+        <i class="icon-tag icon-large" style="margin-left: 15px"></i>
         <div id="compose-button">
             <button type="submit" class="btn btn-success submit">{{ _("Save changes") if article else _("Publish post") }}</button>
-            <a href="{{ "/article/" + article.slug if article else "/" }}">{{ _("Cancel") }}</a>
+            <a href="{{ "/article/" + article.slug if article else "/" }}">
+                <i class="icon-ban-circle"></i> {{ _("Cancel") }}
+            </a>
 
             {% if article %}
               <input type="hidden" name="id" value="{{ article.id }}"/>
