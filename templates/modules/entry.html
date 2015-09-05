@@ -1,6 +1,6 @@
 <div class="panel panel-success">
     <div class="panel-heading">
-        <h3 class="panel-title"><a href="/toptic/{{ article.slug }}">{{ article.title }}</a></h3>
+        <h3 class="panel-title"><a href="/topic/{{ article.slug }}">{{ article.title }}</a></h3>
     </div>
     <div class="panel-body">
         <div class="entry_content">
@@ -11,7 +11,7 @@
         {% if current_user %}
             <a class="entry_a" href="/compose?id={{ article.id }}">{{ _("Edit") }}</a>
         {% else %}
-            <a class="entry_a" href="/toptic/{{ article.slug }}?next=y">Next</a>
+            <a class="entry_a" href="/topic/{{ article.slug }}?next=y">Next</a>
         {% end %}
         </div>
     </div>

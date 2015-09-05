@@ -11,6 +11,7 @@
     <link rel="alternate" href="/feed" type="application/atom+xml" title="myblog"> 
     <!-- bs -->
     <link rel="stylesheet" type="text/css" href="{{ static_url("bootstrap-3.3.5/css/bootstrap.min.css") }}">
+    <link rel="stylesheet" type="text/css" href="{{ static_url("bootstrap-3.3.5/css/font-awesome.min.css") }}">
     <!--[if lt IE 9]>
         <h3>Your browser is too old.. Touch me to upgrade it.</h3>
         <a href="http://www.google.cn/chrome/"><h2>chrome</h2></a>
@@ -37,34 +38,34 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav nav-pills pull-right">
                     <li>
-                        <a href="/">home</a>
+                        <a style="" href="/"><i class="icon-home"></i>  home</a>
                     </li>
                     <li>
-                        <a href="/archive">{{ _("Archive") }}</a>
+                        <a href="/archive"><i class=" icon-book"></i>  {{ _("Archive") }}</a>
                     </li>
                     <li>
-                        <a href="/about">about</a>
+                        <a href="/about"><i class="icon-info-sign"></i>  about</a>
                     </li>
-                    <li>
-                        <a href="/feed">feed</a>
+                    <li>     
+                        <a href="/feed"><i class="icon-rss"></i>  feed</a>
                     </li>
                     {% if current_user %}
                     <li>
-                        <a href="/compose">{{ _("New post") }}</a>
+                        <a href="/compose"><i class="icon-edit"></i>  {{ _("new post") }}</a>
                     </li>
                     <li>
-                        <a href="/logout">{{ _("Sign out") }}</a>
+                        <a href="/logout"><i class="icon-user"></i>  {{ _("sign out") }}</a>
                     </li>
                     {% else %}
                     <li>
-                        {% raw _('<a href="%(url)s">Login</a>') % {"url" : "/login"} %}
+                        {% raw _('<a href="%(url)s"><i class="icon-signin"></i>  Login</a>') % {"url" : "/login"} %}
                     </li>
                     {% end %}
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="container">
+    <div id="body-wrap" class="container">
         {% block body %}
         {% end %}
     </div>

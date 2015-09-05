@@ -23,6 +23,7 @@
 - [x] jquery.scrollTo-1.1.13
 - [x] jsSHA/1.6.0/sha1.js
 - [x] bootstrap3
+- [x] font-awesome
 - [x] ckeditor
 - [x] highlight
 
@@ -35,21 +36,22 @@ CREATE TABLE IF NOT EXISTS users(
   email varchar(30) NOT NULL, 
   password varchar(50) NOT NULL,
   nickname varchar(10) NOT NULL,
-  INDEX (email)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=2;
+  UNIQUE (email)
+  UNIQUE (nickname)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
 ```sql
 CREATE TABLE IF NOT EXISTS tags(
-  tag_id int(10) UNSIGNED NOT NULL DEFAULT NULL PRIMARY KEY AUTO_INCREMENT,
-  tag_parentid int(10) UNSIGNED DEFAULT NULL,
-  tag_type varchar(20) DEFAULT NULL,
-  INDEX (tag_parentid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=2;
+  tag_id int(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  tag_parentid int(10) UNSIGNED,
+  tag_type varchar(20) NOT NULL,
+  UNIQUE (tag_type)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
 ```sql
-CREATE TABLE IF NOT EXISTS articles(
+CREATE TABLE IF NOT EXISTS posts(
   id int(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   slug varchar(50) NOT NULL,
   title varchar(100) NOT NULL,
@@ -57,12 +59,12 @@ CREATE TABLE IF NOT EXISTS articles(
   published datetime NOT NULL,
   updated timestamp NOT NULL DEFAULT current_timestamp on update current_timestamp,
   article_uid int(10) UNSIGNED NOT NULL,
-  article_tag_id int(10) UNSIGNED DEFAULT NULL,
+  article_tag_id int(10) UNSIGNED,
   UNIQUE (slug),
   INDEX (published),
   FOREIGN KEY (article_uid) REFERENCES users (uid),
   FOREIGN KEY (article_tag_id) REFERENCES tags (tag_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=2;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
 ```sql
@@ -72,6 +74,6 @@ CREATE TABLE IF NOT EXISTS meta(
   meta_article_id int(10) UNSIGNED NOT NULL,
   INDEX (views),
   FOREIGN KEY (meta_article_id) REFERENCES articles (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=2;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 

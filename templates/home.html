@@ -42,7 +42,7 @@ $(document).ready(function() {
     var onPage = geturlargs();
     if (!onPage) onPage = 1;
     var sumPage = parseInt($("#sumPage").val());
-    AreaBuild(onPage,sumPage);
+    paging(onPage,sumPage);
     
     // $("#paging").on("click","a",function(){
     //     var pageNum = parseInt($(this).text());

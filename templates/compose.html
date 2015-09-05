@@ -10,32 +10,48 @@
 
 {% block body %}
 <div id="main-wrap" class="col-md-10">
-    <form action="{{ request.path }}" method="post" class="compose_form form-nav">
+    <form action="{{ request.path }}" method="post" id="compose-form" class="form-horizontal">
         <div class="form-group">
-            <label>Title</label>
-            <input name="title" type="text" class="title form-control" value="{{ article.title if article else "" }}" autofocus required/>
+            <label for="compose-title">Title</label>
+            <input name="title" type="text" id="compose-title" class="form-control" value="{{ article.title if article else "" }}" autofocus required/>
         </div>
         <div class="form-group">
-            <textarea name="content" class="content form-control" rows="6" cols="50" required >{{ article.content if article else "" }}</textarea>
+         <label class="sr-only" for="compose-textarea">Content</label>
+            <textarea name="content" id="compose-textarea" class="form-control" rows="6" cols="50" required >{{ article.content if article else "" }}</textarea>
         </div>
-        <div>
-            <input name="article_tag_id" type="text" class="article_tag_id form-control" value="{{ article.article_tag_id if article else "" }}"> 
+       
+        <div id="compose-tag" class="form-group">
+         <label class="sr-only" for="compose-tags">Tag</label>
+            <input name="article_tag" type="text" id="compose-tags" class="form-control" placeholder="add tag" value="{{ article.tag_type if article and article.article_tag_id else "" }}">
         </div>
-        <select class="form-control">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-        </select>
-        <div>
+        <div id="compose-select" class="form-group">
+        
+            <label class="sr-only" for="compose-selects">tag</label>
+            <select  id="compose-selects" class="form-control">
+
+                <option selected="selected">标签</option>
+                {% if tags %}
+                {% for tag in tags %}
+                <option>{{ tag.tag_type }}</option>
+                {% end %}
+                {% end %}
+            </select>
+
+        </div>
+        <i class="icon-tag icon-large" style="margin-left: 15px"></i>
+        <div id="compose-button">
             <button type="submit" class="btn btn-success submit">{{ _("Save changes") if article else _("Publish post") }}</button>
-            &nbsp;<a href="{{ "/article/" + article.slug if article else "/" }}">{{ _("Cancel") }}</a>
+            <a href="{{ "/article/" + article.slug if article else "/" }}">
+                <i class="icon-ban-circle"></i> {{ _("Cancel") }}
+            </a>
+
+            {% if article %}
+              <input type="hidden" name="id" value="{{ article.id }}"/>
+            {% else %}
+                <small class="local_log"></small>
+            {% end %}
+            {% module xsrf_form_html() %}
         </div>
-        {% if article %}
-          <input type="hidden" name="id" value="{{ article.id }}"/>
-        {% else %}
-            <small class="local_log"></small>
-        {% end %}
-        {% module xsrf_form_html() %}
     </form>
 </div>
 {% end %}
@@ -48,7 +64,20 @@
         // ckeditor
         CKEDITOR.replace('content');
     }
+</script>
+<script type="text/javascript">
+    //onchange事件
+    $("#compose-selects").change(function () {
+        var str = $("#compose-selects option:selected").text();
+        var firstTag = $("#compose-selects option:first-child").val();
+        // var firstTag = document.getElementById("compose-selects").options[0].value;
+        if (str != firstTag) {
+            $("#compose-tags").val(str);
+        }else{
+            $("#compose-tags").val("");
+        };
+    });
 
-    
+    //post
 </script>
 {% end %}

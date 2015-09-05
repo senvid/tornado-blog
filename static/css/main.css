@@ -4,6 +4,9 @@ body {
 #nav-head {
     margin-bottom: 80px;
 }
+#navbar a {
+    display: inline-block;
+}
 
 pre {
     border: 0;
@@ -54,6 +57,29 @@ pre {
     margin-top:25px;
 }
 
+#not_found {
+    text-align: center;
+    margin: 20px auto;
+}
+
+#compose-tag {
+    width:20%;
+    float:left;
+}
+
+#compose-select {
+    width:15%;
+    display: inline-block;
+    margin-left:15px;
+}
+
+#compose-form {
+    margin-bottom:30px;
+}
+#compose-button {
+    margin-left:-15px;
+    
+}
 section.inner{
     border:1px solid rgba(0, 0, 0, 0.2);
     border-radius:8px;
@@ -63,6 +89,14 @@ section.inner{
 .archive_delete{
     float:right;
 }
+
+/*-----------------------------*/
+/* Aside */
+#tag_a a {
+    display: block;
+    margin-bottom: 10px;
+}
+
 
 /*----------------------------*/
 /*footer*/
@@ -79,6 +113,7 @@ body {
 .footer {
     position: absolute;
     bottom: 0;
+    margin-top:50px;
     width: 100%;
     /* Set the fixed height of the footer here */
     height: 60px;

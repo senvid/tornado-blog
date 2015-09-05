@@ -137,10 +137,10 @@ function rebuildPageArea(pageNum, sumPage, onPage) {
             begin = sumPage - 2;
         };
     };
-    AreaBuild(begin, end);
+    paging(begin, end);
 }
 
-function AreaBuild(begin, end) {
+function paging(begin, end) {
     var count = 0;
     if (begin < 1) {
         return

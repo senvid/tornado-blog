@@ -1,18 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <meta name="keywords" content="hello,world" />
-    <title>500</title>
-    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ escape(handler.settings["blog_title"]) }}</title>
+    <style type="text/css">
+    body {
+        background: #eff2f5;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+    
+    #error {
+        padding: 2em 1.25em;
+        border: 1px solid #babbbc;
+        border-radius: 5px;
+        background: #f7f7f7;
+        text-align: center;
+        margin-top: 10%;
+        margin-left: 30%;
+        width: 40%;
+    }
+    
+    #error a {
+        text-decoration: none;
+        color: #105cb6;
+        margin-top: 30px;
+        display: block;
+    }
+    
+    #error a:hover {
+        text-decoration: underline;
+    }
+    </style>
 </head>
 
 <body>
-    500
-</body>
-
-</html>
+    <div id="error">
+        <p>oh no !!!</p>
+        <p>服务器发现一个错误</p>
+        <p>请稍后再试</p>
+        <p><strong>500</strong></p>
+        <a href="/">返回首页</a>
+    </div>
 </body>
 
 </html>
