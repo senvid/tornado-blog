@@ -220,3 +220,15 @@ $(".archive_delete").click(function() {
         }
     )
 });
+
+//compose select option  onchange
+$("#compose-selects").change(function () {
+    var str = $("#compose-selects option:selected").text();
+    var firstTag = $("#compose-selects option:first-child").val();
+    // var firstTag = document.getElementById("compose-selects").options[0].value;
+    if (str != firstTag) {
+        $("#compose-tags").val(str);
+    }else{
+        $("#compose-tags").val("");
+    };
+});

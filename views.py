@@ -242,6 +242,7 @@ class ComposeHandler(BaseHandler):
                 )
                 if not article:
                     raise tornado.web.HTTPError(404)
+                    return
                 slug = article.slug
                 self.db.execute(
                     "UPDATE posts SET title = %s, content = %s,"
@@ -347,6 +348,4 @@ class SearchHandler(BaseHandler):
                 "SELECT title, slug,published FROM posts WHERE title LIKE "
                 "%s OR content LIKE %s",args,args
             )
-            # if not res:
-            #     self.write("")
             self.render("archive.html",articles=res)
