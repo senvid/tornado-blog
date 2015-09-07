@@ -2,11 +2,16 @@
 # -*- coding:utf-8 -*-
 
 
-# mysql sync connection pools
+# mysql sync connection pools wrapper around torndb
 
-import MySQLdb
+
 from Queue import Queue
+import tinylog
+import time
+import torndb
 
+
+log = tinylog.LogHandler("dbPool.log",logName="dbPool",level="debug")
 
 class ConnectionPool(object):
 
@@ -16,36 +21,33 @@ class ConnectionPool(object):
 		super(ConnectionPool, self).__init__()
 		self.max_connections = max_connections
 		self.connInfo = connInfo
-		self._pool = Queue(self.max_connections)
-
-		for x in xrange(self.max_connections):
+		self._pool = Queue(max_connections)
+		start = time.time()
+		for x in xrange(max_connections):
 			self.fillPool()
-		print "初始化。。  ",self._pool.queue
+
+		timeDelta = (time.time() - start)*1000
+		log.info("init over use:%sms" % timeDelta)
 
 	def createConn(self, connInfo):
 		try:
 			# conn = MySQLdb.connect(
 			    # user='blog', passwd='blog', host='localhost', port=3306, db='test')
-			conn = MySQLdb.connect(**connInfo)
-			conn.info = "pool"
-		    conn.ping()
-
+			return torndb.Connection(**connInfo)
 		except Exception, e:
 			raise e
 
 	def fillPool(self):
 		try:
-			connDB = self.createConn(self.connInfo)
-			self._pool.put(connDB)
-			print "fill    ",connDB
+			conn = self.createConn(self.connInfo)
+			self._pool.put(conn)
+			log.info("fill conn success")
 		except Exception, e:
 			raise e
 			
 	def getConn(self):
 		try:
-			one = self._pool.get()
-			print "get one .. ",one
-			return one
+			return self._pool.get()
 		except Exception, e:
 			raise e
 
@@ -60,31 +62,61 @@ class ConnectionPool(object):
 		except Exception, e:
 			raise e
 	def closeAll(self):
-		for x in xrange self._pool.qsize():
+		for x in xrange(self._pool.qsize()):
 			self._pool.get().close()
-		print "closeAll"
+		log.info("closeAll")
 
+	def get(self, *args, **kwarguments):
+		try:
+			one = self.getConn()
+		    return one.get(*args, **kwarguments)
+		except Exception, e:
+			raise e
+		finally:
+			self._pool.put(one)
+	def makefunc(self,method,*args,**kwarguments):
+		try:
+			conn = self.getConn()
+			log.info("get one conn  %s" % conn)
+			return getattr(conn,method)(*args,**kwarguments)
+		except Exception, e:
+			raise e
+		finally:
+			self._pool.put(conn)
+			log.info("release connect to pools")
 connMeta ={
     "user":'blog', 
-    "passwd":'blog',
-    "host":'localhost', 
-    "port":3306,
-    "db":'test'
+    "password":'blog',
+    "host":'localhost:3306',
+    "database":'test',
+    "time_zone":"+8:00"
 }
 
 
 dbPool = ConnectionPool(5,connMeta)
-conn1 = dbPool.getConn()
-c = conn1.cursor()
-print c
-sql = "self * from tags"
-r = c.execute(sql)
-r = c.fetchall()
 raw_input(">>")
-conn2 = dbPool.getConn()
-c2 = conn2.cursor()
-print c2
-r2 = c2.execute(sql)
-r2 = c2.fetchall()
+conn1 = dbPool.get("select * from tags where tag_id=20")
+for i in conn1:
+	print i
+
+raw_input(">>")
+conn2 = dbPool.get("select tag_type from tags where tag_id=20")
+for i in conn1:
+	print i
+
+raw_input(">>")
+# c = conn1.cursor()
+# print c
+# sql = "self * from tags"
+# r = c.execute(sql)
+# r = c.fetchall()
+# raw_input(">>")
+# conn2 = dbPool.getConn()
+# c2 = conn2.cursor()
+# print c2
+# r2 = c2.execute(sql)
+# r2 = c2.fetchall()
 
 dbPool.closeAll()
+
+
