@@ -3,7 +3,7 @@
 
 '''
 simple logging handler
-useage:
+usage:
 
 log = LogHandler("tst.log",logName="test",level="info")
 log.debug("debug message")
