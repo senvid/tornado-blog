@@ -4,7 +4,6 @@
 
 import tornado
 from datetimeTojson import Tojson
-from tornado.options import define, options
 import time
 import json
 import logging
@@ -17,22 +16,28 @@ try:
 except ImportError:
     logging.warn("no module named torndb")
 
+from config import pool
+
+
 # articles per page
 sp = 3
 
-
 class BaseHandler(tornado.web.RequestHandler):
+
+    # @property
+    # def db(self):
+    #     self.conn = torndb.Connection(
+    #         host=options.mysql_host,
+    #         database=options.mysql_database,
+    #         user=options.mysql_user,
+    #         password=options.mysql_password,
+    #         time_zone='+8:00'
+    #     )
+    #     return self.conn
 
     @property
     def db(self):
-        self.conn = torndb.Connection(
-            host=options.mysql_host,
-            database=options.mysql_database,
-            user=options.mysql_user,
-            password=options.mysql_password,
-            time_zone='+8:00'
-        )
-        return self.conn
+        return pool
 
     def get_current_user(self):
         user_id = self.get_secure_cookie("blog_user")
@@ -72,6 +77,7 @@ class HomeHandler(BaseHandler):
             return
         self.render("home.html", articles=articles, sumPage=sumPage)
 
+
 class EntryModule(tornado.web.UIModule):
 
     def render(self, article=None):
@@ -86,7 +92,7 @@ class ArticleModule(tornado.web.UIModule):
 
 class AsideModule(tornado.web.UIModule, BaseHandler):
 
-    #def render(self, getAllTags, aside_title)
+    # def render(self, getAllTags, aside_title)
     def render(self):
         getAllTags = self.db.query(
             "SELECT COUNT(id),tag_type FROM tags LEFT JOIN posts "
@@ -198,8 +204,6 @@ class FeedHandler(BaseHandler):
         self.render("feed.xml", articles=articles)
 
 
-
-
 class ComposeHandler(BaseHandler):
 
     @tornado.web.authenticated
@@ -242,6 +246,7 @@ class ComposeHandler(BaseHandler):
                 )
                 if not article:
                     raise tornado.web.HTTPError(404)
+                    return
                 slug = article.slug
                 self.db.execute(
                     "UPDATE posts SET title = %s, content = %s,"
@@ -280,6 +285,7 @@ class AuthLoginHandler(BaseHandler):
         self.render("login.html")
 
     tornado.web.asynchronous
+
     def post(self):
         email = self.get_argument("email", None)
         password = self.get_argument("password", None)
@@ -324,29 +330,29 @@ class DeleteHandler(BaseHandler):
                 title_t, slug_s.split("/")[2])
             self.write("deleted")
 
+
 class TagArchiveHandler(BaseHandler):
-   
-   def get(self, tag):
+
+    def get(self, tag):
         entries = self.db.query(
             "SELECT title,slug,published FROM posts INNER JOIN tags ON "
             "article_tag_id=tag_id WHERE tag_type=%s", tag
         )
         if not entries:
-               self.write_error(404)
-               return   
+            self.write_error(404)
+            return
         self.render("archive.html", articles=entries)
+
 
 class SearchHandler(BaseHandler):
 
     def get(self):
-        args = self.get_argument("search",None)
+        args = self.get_argument("search", None)
         if args:
             # sql  escape
             args = "%%%s%%" % args
             res = self.db.query(
                 "SELECT title, slug,published FROM posts WHERE title LIKE "
-                "%s OR content LIKE %s",args,args
+                "%s OR content LIKE %s", args, args
             )
-            # if not res:
-            #     self.write("")
-            self.render("archive.html",articles=res)
+            self.render("archive.html", articles=res)
