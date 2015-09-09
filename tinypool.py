@@ -5,18 +5,18 @@
 mysql sync connection pool wrapper around torndb
 
 usage:
-	import tinypool
-	
-	connMeta = {
-	    "user": 'username',
-	    "password": 'password',
-	    "host": 'localhost:3306',
-	    "database": 'test',
-	    "time_zone": "+0:00"
-	}
+    import tinypool
+    
+    connMeta = {
+        "user": 'username',
+        "password": 'password',
+        "host": 'localhost:3306',
+        "database": 'test',
+        "time_zone": "+0:00"
+    }
     #pool size:50
-	db = tinypool.Pool(50, connMeta)
-	res = db.get("select * from test")
+    db = tinypool.Pool(50, connMeta)
+    res = db.get("select * from test")
 '''
 
 from Queue import Queue
@@ -26,6 +26,7 @@ import torndb
 # set log file
 import tinylog
 log = tinylog.LogHandler("dbPool.log", logName="db", level="debug")
+
 # use logging not tinylog
 if not hasattr(log, "info"):
     import logging as log
@@ -39,9 +40,9 @@ class Pool(object):
 
         self.max_connections = max_connections
         self.connInfo = connInfo
-        self._pool = Queue(max_connections)
+        self._pool = Queue(self.max_connections)
         start = time.time()
-        for x in xrange(max_connections):
+        for x in xrange(self.max_connections):
             self._fillPool()
 
         timeDelta = (time.time() - start)*1000
@@ -101,9 +102,9 @@ class Pool(object):
 
     def execute(self, *args, **kwarguments):
         return self._makefunc("execute", *args, **kwarguments)
-
+    
+    # torndb.py 211-215 line insert = execute_lastrowid
     def insert(self, *args, **kwarguments):
-        # torndb.py 211-215 line insert = execute_lastrowid
         return self._makefunc("insert", *args, **kwarguments)
 
     def update(self, *args, **kwarguments):
