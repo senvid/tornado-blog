@@ -21,4 +21,4 @@ dbConfig = {
     "time_zone" : "+8:00"
 }
 
-pool = tinypool.Pool(10, dbConfig)
+pool = tinypool.Pool(20, dbConfig)

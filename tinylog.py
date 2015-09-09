@@ -18,8 +18,8 @@ import logging.handlers
 
 class LogHandler(object):
 
-    def __init__(self, fileName, fileSize=1024*1024*100,
-                 backupCount=5, logName=None, level="info"
+    def __init__(self, fileName, fileSize=0, backupCount=0,
+                 logName=None, level="info"
                  ):
         self.fileName = fileName
         self.fileSize = fileSize

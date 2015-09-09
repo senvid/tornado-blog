@@ -14,7 +14,8 @@ usage:
 	    "database": 'test',
 	    "time_zone": "+0:00"
 	}
-	db = tinypool.Pool(5, connMeta)
+    #pool size:50
+	db = tinypool.Pool(50, connMeta)
 	res = db.get("select * from test")
 '''
 
@@ -24,7 +25,7 @@ import torndb
 
 # set log file
 import tinylog
-log = tinylog.LogHandler("dbPool.log", logName="dbPool", level="debug")
+log = tinylog.LogHandler("dbPool.log", logName="db", level="debug")
 # use logging not tinylog
 if not hasattr(log, "info"):
     import logging as log
@@ -53,7 +54,6 @@ class Pool(object):
         try:
             conn = self._createConn(self.connInfo)
             self._pool.put(conn)
-            log.info("add conn success")
         except Exception, e:
             raise e
 
@@ -81,7 +81,7 @@ class Pool(object):
         try:
             conn = self._getConn()
             res = getattr(conn, method)(*args, **kwarguments)
-            # log.info(*args, **kwarguments)
+            log.info(args)
         except Exception, e:
             raise e
         finally:
