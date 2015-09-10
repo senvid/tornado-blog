@@ -1,4 +1,0 @@
-markdown
-tornado
-torndb
-MySQL-python

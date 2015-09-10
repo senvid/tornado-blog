@@ -7,6 +7,7 @@ import tornado.web
 import tornado.ioloop
 import tornado.autoreload
 from tornado.options import options
+import logging
 from urls import app
 import config
 
@@ -18,5 +19,5 @@ if __name__ == "__main__":
     loop = tornado.ioloop.IOLoop.instance()
     tornado.autoreload.add_reload_hook(config.pool.closeAll)
     tornado.autoreload.start(loop,1000)
-    print 'server start..'
+    logging.info('**************  server start  **************')
     loop.start()
