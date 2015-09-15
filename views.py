@@ -147,8 +147,6 @@ class PageJsonHandler(BaseHandler):
         page = self.get_argument("page", None)
         if page:
             page_start = int(page) * sp - sp
-           # articles = self.db.query("SELECT * FROM articles ORDER BY published "
-            #            "DESC LIMIT %s,5" , page_start)
             articles = self.db.query(
                 "SELECT * FROM posts ORDER BY id DESC LIMIT %s, %s",
                 page_start, sp
@@ -237,7 +235,7 @@ class ComposeHandler(BaseHandler):
                     "INSERT INTO tags(tag_type) values(%s);SELECT @@IDENTITY",
                     article_tag
                 )
-                # notice here different
+                # notice here
                 article_tag_id = str(get_tag)
         if title and content:
             if id:
