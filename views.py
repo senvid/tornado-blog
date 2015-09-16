@@ -92,7 +92,7 @@ class ArticleModule(tornado.web.UIModule):
 
 class AsideModule(tornado.web.UIModule, BaseHandler):
 
-    # def render(self, getAllTags, aside_title)
+
     def render(self):
         getAllTags = self.db.query(
             "SELECT COUNT(id),tag_type FROM tags LEFT JOIN posts "
@@ -137,7 +137,6 @@ class PageHandler(BaseHandler):
             else:
                 self.redirect("/")
         except:
-            # self.redirect("/")
             self.write("NO PAGE FOUND")
 
 
