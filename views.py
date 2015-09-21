@@ -281,8 +281,6 @@ class AuthLoginHandler(BaseHandler):
             self.set_cookie("_xsrf", mytoken)
         self.render("login.html")
 
-    tornado.web.asynchronous
-
     def post(self):
         email = self.get_argument("email", None)
         password = self.get_argument("password", None)
