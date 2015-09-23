@@ -44,7 +44,6 @@
             <a href="{{ "/article/" + article.slug if article else "/" }}">
                 <i class="icon-ban-circle"></i> {{ _("Cancel") }}
             </a>
-
             {% if article %}
               <input type="hidden" name="id" value="{{ article.id }}"/>
             {% else %}

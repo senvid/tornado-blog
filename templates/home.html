@@ -15,7 +15,6 @@
     <section class="inner">
         {% for article in articles %}
         <article class="article">
-             <!-- module Entry(articel)  -->
             {% module Article(article) %}
         </article>
         {% end %}
@@ -43,14 +42,6 @@ $(document).ready(function() {
     if (!onPage) onPage = 1;
     var sumPage = parseInt($("#sumPage").val());
     paging(onPage,sumPage);
-    
-    // $("#paging").on("click","a",function(){
-    //     var pageNum = parseInt($(this).text());
-    //     onPage = pageNum;
-    //     var send_data = $.param({ page_num:pageNum});
-    //     queryPageNum(pageNum,send_data,sumPage,onPage);
-    // });
-
 });
 </script>
 {% end %}
