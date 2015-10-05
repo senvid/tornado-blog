@@ -41,7 +41,7 @@
         <i class="icon-tag icon-large" style="margin-left: 15px"></i>
         <div id="compose-button">
             <button type="submit" class="btn btn-success submit">{{ _("Save changes") if article else _("Publish post") }}</button>
-            <a href="{{ "/article/" + article.slug if article else "/" }}">
+            <a href="{{ "/topic/" + article.slug if article else "/" }}">
                 <i class="icon-ban-circle"></i> {{ _("Cancel") }}
             </a>
             {% if article %}
