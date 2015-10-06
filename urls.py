@@ -16,7 +16,7 @@ settings = dict(
         "Aside": AsideModule,
     },
     xsrf_cookies=True,
-    cookie_secret="re7GpEHbTTih7NQOvGrtx05Y/1PYhkbFqiDCdY2Rgzo=",
+    cookie_secret="sw7GpEHbTTih7NQOvGrtx05Y/1PYhkbFqiDCdY2Rgzo=",
     login_url="/login",
     debug=True,
     autoreload=True
