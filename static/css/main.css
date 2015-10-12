@@ -39,6 +39,7 @@ pre {
 
 .entry_content {
     text-overflow: ellipsis;
+    white-space: nowrap;
     overflow:hidden;
 }
 .date-wrap {
