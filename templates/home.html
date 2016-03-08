@@ -2,20 +2,12 @@
 {% block head %}
     <link rel="stylesheet" type="text/css" href="{{ static_url("ckeditor/plugins/codesnippet/lib/highlight/styles/monokai_sublime.css") }}">
     <script type="text/javascript" src="{{ static_url("ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js") }}"></script>
-    <style type="text/css">
-        .entry_content {
-            max-height: 200px;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-    </style>
 {% end %}
 {% block body %}
 <div class="col-md-8 main-wrap">
     <section class="inner">
         {% for article in articles %}
         <article class="article">
-             <!-- module Entry(articel)  -->
             {% module Article(article) %}
         </article>
         {% end %}
@@ -43,14 +35,6 @@ $(document).ready(function() {
     if (!onPage) onPage = 1;
     var sumPage = parseInt($("#sumPage").val());
     paging(onPage,sumPage);
-    
-    // $("#paging").on("click","a",function(){
-    //     var pageNum = parseInt($(this).text());
-    //     onPage = pageNum;
-    //     var send_data = $.param({ page_num:pageNum});
-    //     queryPageNum(pageNum,send_data,sumPage,onPage);
-    // });
-
 });
 </script>
 {% end %}

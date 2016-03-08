@@ -89,7 +89,6 @@ $(document).ready(function() {
         var mypassword = $("#password").val();
         var sha1obj = new jsSHA(mypassword, "TEXT");
         var sha1password = sha1obj.getHash("SHA-1", "HEX");
-        console.log(sha1password);
         function getCookie(name) {
             var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
             return r ? r[1] : undefined;

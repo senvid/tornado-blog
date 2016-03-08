@@ -92,7 +92,7 @@ class ArticleModule(tornado.web.UIModule):
 
 class AsideModule(tornado.web.UIModule, BaseHandler):
 
-    # def render(self, getAllTags, aside_title)
+
     def render(self):
         getAllTags = self.db.query(
             "SELECT COUNT(id),tag_type FROM tags LEFT JOIN posts "
@@ -137,7 +137,6 @@ class PageHandler(BaseHandler):
             else:
                 self.redirect("/")
         except:
-            # self.redirect("/")
             self.write("NO PAGE FOUND")
 
 
@@ -147,8 +146,6 @@ class PageJsonHandler(BaseHandler):
         page = self.get_argument("page", None)
         if page:
             page_start = int(page) * sp - sp
-           # articles = self.db.query("SELECT * FROM articles ORDER BY published "
-            #            "DESC LIMIT %s,5" , page_start)
             articles = self.db.query(
                 "SELECT * FROM posts ORDER BY id DESC LIMIT %s, %s",
                 page_start, sp
@@ -237,7 +234,7 @@ class ComposeHandler(BaseHandler):
                     "INSERT INTO tags(tag_type) values(%s);SELECT @@IDENTITY",
                     article_tag
                 )
-                # notice here different
+                # notice here
                 article_tag_id = str(get_tag)
         if title and content:
             if id:
@@ -283,8 +280,6 @@ class AuthLoginHandler(BaseHandler):
             mytoken = binascii.b2a_hex(os.urandom(16))
             self.set_cookie("_xsrf", mytoken)
         self.render("login.html")
-
-    tornado.web.asynchronous
 
     def post(self):
         email = self.get_argument("email", None)
