@@ -6,7 +6,7 @@ import tornado
 import tornado.web
 import tornado.ioloop
 import tornado.autoreload
-from tornado.options import options
+
 import logging
 from urls import app
 import config
