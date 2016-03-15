@@ -271,7 +271,6 @@ class ComposeHandler(BaseHandler):
 
 class AuthLoginHandler(BaseHandler):
 
-    @tornado.web.asynchronous
     def get(self):
         if self.get_secure_cookie("blog_user"):
             self.redirect("/")
