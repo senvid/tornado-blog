@@ -36,21 +36,21 @@ class Pool(object):
 
     """docstring for Pool"""
 
-    def __init__(self, max_connections, **connInfo):
+    def __init__(self, max_connections, connInfo):
 
         self.max_connections = max_connections
         self.connInfo = connInfo
         self._pool = Queue(self.max_connections)
-        self._fillPool()
-
+        
         start = time.time()
+        self._fillPool()
         timeDelta = (time.time() - start)*1000
         log.info("db Pool init over use:%sms" % timeDelta)
 
     def _fillPool(self):
         for x in range(self.max_connections):
             try:
-                conn = torndb.Connection(self.connInfo)
+                conn = torndb.Connection(**self.connInfo)
                 self._pool.put(conn)
             except Exception, e:
                 log.error("dbPool init failed..")
