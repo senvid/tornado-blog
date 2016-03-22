@@ -36,27 +36,25 @@ class Pool(object):
 
     """docstring for Pool"""
 
-    def __init__(self, max_connections, connInfo):
+    def __init__(self, max_connections, **connInfo):
 
         self.max_connections = max_connections
         self.connInfo = connInfo
         self._pool = Queue(self.max_connections)
-        start = time.time()
-        for x in xrange(self.max_connections):
-            self._fillPool()
+        self._fillPool()
 
+        start = time.time()
         timeDelta = (time.time() - start)*1000
         log.info("db Pool init over use:%sms" % timeDelta)
 
-    def _createConn(self, connInfo):
-        return torndb.Connection(**connInfo)
-
     def _fillPool(self):
-        try:
-            conn = self._createConn(self.connInfo)
-            self._pool.put(conn)
-        except Exception, e:
-            raise e
+        for x in range(self.max_connections):
+            try:
+                conn = torndb.Connection(self.connInfo)
+                self._pool.put(conn)
+            except Exception, e:
+                log.error("dbPool init failed..")
+                raise e
 
     def _getConn(self):
         try:
@@ -67,7 +65,7 @@ class Pool(object):
     def closeAll(self):
         """Close this pool and close all database connection."""
         if self._pool.qsize():
-            for x in xrange(self._pool.qsize()):
+            for x in range(self._pool.qsize()):
                 self._pool.get().close()
 
     def __del__(self):
