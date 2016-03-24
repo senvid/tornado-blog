@@ -6,6 +6,7 @@ import tornado
 import tornado.web
 import tornado.ioloop
 import tornado.autoreload
+import tornado.options
 
 import logging
 from urls import app
@@ -14,11 +15,11 @@ from datetime import datetime
 
 
 if __name__ == "__main__":
-	tornado.options.parse_command_line()
-	app.listen(config.options.port)
-	loop = tornado.ioloop.IOLoop.instance()
-	tornado.autoreload.add_reload_hook(config.pool.closeAll)
-	tornado.autoreload.start(loop,1000)
-	start_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-	logging.info('**************  server start at %s **************' % start_time)
-	loop.start()
+    tornado.options.parse_command_line()
+    app.listen(config.options.port)
+    loop = tornado.ioloop.IOLoop.instance()
+    tornado.autoreload.add_reload_hook(config.pool.closeAll)
+    tornado.autoreload.start(loop, 1000)
+    start_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    logging.info('************  server start at %s ************' % start_time)
+    loop.start()

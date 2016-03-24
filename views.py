@@ -3,6 +3,7 @@
 
 
 import tornado
+import tornado.web
 from datetimeTojson import Tojson
 import time
 import json
@@ -52,6 +53,9 @@ class BaseHandler(tornado.web.RequestHandler):
             self.render('500.html')
         else:
             super(BaseHandler, self).write_error(status_code, **kwargs)
+
+    def data_received(self, chunk):
+        pass
 
 
 class PageNoFindHandler(tornado.web.RequestHandler):
@@ -136,7 +140,7 @@ class PageHandler(BaseHandler):
                 self.render("home.html", articles=articles, sumPage=sumPage)
             else:
                 self.redirect("/")
-        except:
+        except ValueError:
             self.write("NO PAGE FOUND")
 
 
@@ -205,19 +209,19 @@ class ComposeHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
-        id = self.get_argument("id", None)
+        entry_id = self.get_argument("id", None)
         article = None
-        if id:
+        if entry_id:
             article = self.db.get(
                 "SELECT * FROM posts LEFT JOIN tags ON "
-                "article_tag_id = tag_id WHERE id = %s", id
+                "article_tag_id = tag_id WHERE id = %s", entry_id
             )
         tags = self.db.query("SELECT * FROM tags")
         self.render("compose.html", article=article, tags=tags)
 
     @tornado.web.authenticated
     def post(self):
-        id = self.get_argument("id", None)
+        entry_id = self.get_argument("id", None)
         title = self.get_argument("title")
         content = self.get_argument("content")
         # tag not id
@@ -237,24 +241,23 @@ class ComposeHandler(BaseHandler):
                 # notice here
                 article_tag_id = str(get_tag)
         if title and content:
-            if id:
+            if entry_id:
                 article = self.db.get(
-                    "SELECT * FROM posts WHERE id = %s", id
+                    "SELECT * FROM posts WHERE id = %s", entry_id
                 )
                 if not article:
                     raise tornado.web.HTTPError(404)
-                    return
                 slug = article.slug
                 self.db.execute(
                     "UPDATE posts SET title = %s, content = %s,"
                     "article_tag_id = %s WHERE id = %s",
-                    title, content, article_tag_id, id
+                    title, content, article_tag_id, entry_id
                 )
             else:
                 today = time.strftime("%Y%m%d")
-                max = self.db.get(
+                maxId = self.db.get(
                     "SELECT id FROM posts ORDER BY id DESC LIMIT 1")
-                max_id = max["id"]
+                max_id = maxId["id"]
                 if not max_id:
                     max_id = 100
                 slug = "".join([today, str(max_id)])
