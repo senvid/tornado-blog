@@ -34,7 +34,7 @@ app = tornado.web.Application([
     (r"/logout", AuthLogoutHandler),
     (r"/feed", FeedHandler),
     (r"/page", PageHandler),
-    (r"/search",SearchHandler),
+    (r"/search", SearchHandler),
     # (r"/pagejson", PageJsonHandler),
     (r"/topic/([^/]+)", TopicHandler),
     (r"/tag/([^/]+)", TagArchiveHandler),

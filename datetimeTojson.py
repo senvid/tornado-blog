@@ -17,7 +17,8 @@ class Tojson(json.JSONEncoder):
     def ddate(self, d):
         date_attr = [d.year, d.month, d.day]
         if isinstance(d, datetime.datetime):
-            date_attr.extend([d.hour, d.minute, d.second, d.microsecond, d.tzinfo])
+            date_attr.extend(
+                [d.hour, d.minute, d.second, d.microsecond, d.tzinfo])
         return datetime.datetime(*date_attr)
 
     def dtime(self, d):
