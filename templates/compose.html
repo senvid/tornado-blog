@@ -55,13 +55,22 @@
 </div>
 {% end %}
 {% block bottom %}
-<script type="text/javascript" src="{{ static_url("ckeditor/ckeditor.js") }}"></script>
+<!-- <script type="text/javascript" src=" static_url("ckeditor/ckeditor.js") "></script> -->
+<script src="//cdn.bootcss.com/ckeditor/4.5.4/ckeditor.js"></script>
 <script type="text/javascript">
     // localSave(".content",".local_log");
     // localSave(".title");
     window.onload=function() {
         // ckeditor
-        CKEDITOR.replace('content');
+        CKEDITOR.plugins.addExternal('widget', '{{ static_url("ckeditor/plugins/widget/") }}', 'plugin.js');
+        CKEDITOR.plugins.addExternal('lineutils', '{{ static_url("ckeditor/plugins/lineutils/") }}', 'plugin.js');
+        CKEDITOR.plugins.addExternal('codesnippet', '{{ static_url("ckeditor/plugins/codesnippet/") }}', 'plugin.js');
+        CKEDITOR.replace('content', {
+            extraPlugins: 'widget',
+            extraPlugins: 'lineutils',
+            extraPlugins: 'codesnippet',
+            customConfig: '{{ static_url("ckeditor/config.js") }}'
+        });
     }
 </script>
 {% end %}

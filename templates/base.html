@@ -10,8 +10,9 @@
     <title>{{ escape(handler.settings["blog_title"]) }}</title>
     <link rel="alternate" href="/feed" type="application/atom+xml" title="myblog"> 
     <!-- bs -->
-    <link rel="stylesheet" type="text/css" href="{{ static_url("bootstrap-3.3.5/css/bootstrap.min.css") }}">
-    <link rel="stylesheet" type="text/css" href="{{ static_url("bootstrap-3.3.5/css/font-awesome.min.css") }}">
+    <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <!-- font-awesome -->
+    <link href="//cdn.bootcss.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
         <h3>Your browser is too old.. Touch me to upgrade it.</h3>
         <a href="http://www.google.cn/chrome/"><h2>chrome</h2></a>
@@ -78,8 +79,8 @@
             </p>
         </div>
     </footer>
-<script type="text/javascript" src="{{ static_url("js/jquery-2.1.1.min.js") }}"></script>
-<script type="text/javascript" src="{{ static_url("bootstrap-3.3.5/js/bootstrap.min.js") }}"></script>
+<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="{{ static_url("js/web.js") }}"></script>
 <script type="text/javascript">
 $(document).ready(function(){

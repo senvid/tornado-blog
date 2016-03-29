@@ -1,40 +1,40 @@
 {% extends "base.html" %} 
-{% block head %}
-    <link rel="stylesheet" type="text/css" href="{{ static_url("ckeditor/plugins/codesnippet/lib/highlight/styles/monokai_sublime.css") }}">
-    <script type="text/javascript" src="{{ static_url("ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js") }}"></script>
-{% end %}
-{% block body %}
-<div class="col-md-8 main-wrap">
-    <section class="inner">
-        {% for article in articles %}
-        <article class="article">
-            {% module Article(article) %}
-        </article>
-        {% end %}
-    </section>
-    <hr />
-    <!-- paging -->
-    <input id="sumPage" type="hidden" value={{ sumPage }} />
-    <nav>
-        <ul id="paging" class="pagination">
-        </ul>
-    </nav>
-</div>
+    {% block head %}
+        <link href="//cdn.bootcss.com/highlight.js/9.2.0/styles/monokai_sublime.min.css" rel="stylesheet">
+        <script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+    {% end %}
+    {% block body %}
+        <div class="col-md-8 main-wrap">
+            <section class="inner">
+                {% for article in articles %}
+                <article class="article">
+                    {% module Article(article) %}
+                </article>
+                {% end %}
+            </section>
+            <hr />
+            <!-- paging -->
+            <input id="sumPage" type="hidden" value={{ sumPage }} />
+            <nav>
+                <ul id="paging" class="pagination">
+                </ul>
+            </nav>
+        </div>
 
-<div class="col-md-3 col-md-offset-1 main-wrap">
-    <div id="aside-wrap">
-        {% module Aside() %}
-    </div>
-</div>
-{% end %}
-{% block bottom %}
-<script type="text/javascript">
-$(document).ready(function() {
-    hljs.initHighlightingOnLoad();
-    var onPage = geturlargs();
-    if (!onPage) onPage = 1;
-    var sumPage = parseInt($("#sumPage").val());
-    paging(onPage,sumPage);
-});
-</script>
-{% end %}
+        <div class="col-md-3 col-md-offset-1 main-wrap">
+            <div id="aside-wrap">
+                {% module Aside() %}
+            </div>
+        </div>
+    {% end %}
+    {% block bottom %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            hljs.initHighlightingOnLoad();
+            var onPage = geturlargs();
+            if (!onPage) onPage = 1;
+            var sumPage = parseInt($("#sumPage").val());
+            paging(onPage,sumPage);
+        });
+        </script>
+    {% end %}

@@ -1,122 +1,123 @@
-{% extends "base.html" %} {% block head %}
-<style type="text/css">
-body {
-    /* padding-top: 40px;*/
-    padding-bottom: 40px;
-    background-color: #eee;
-}
-
-.form-signin {
-    max-width: 330px;
-    padding: 15px;
-    margin: 0 auto;
-}
-
-
-/*.form-signin .form-signin-heading,
-.form-signin .checkbox {
-  margin-bottom: 10px;
-}*/
-
-
-/*.form-signin .checkbox {
-  font-weight: normal;
-}*/
-
-.form-signin .form-control {
-    position: relative;
-    height: auto;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    padding: 10px;
-    font-size: 16px;
-}
-
-.form-signin .form-control:focus {
-    z-index: 2;
-}
-
-.form-signin input[type="email"] {
-    margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-}
-
-.form-signin input[type="password"] {
-    margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
-</style>
-{% end %} 
-{% block body %}
-
-<!-- <div id="login_outer">
-    <form id="login_form" action="" method="post" autocomplete="on">
-        <input id="email" type="email" name="email" required="required" pattern="[\w]+[@][A-z0-9]+\.[A-z]+" placeholder="Email" />
-        <br />
-        <input id="password" type="password" name="password" required="required" placeholder="Password" />
-        <br />
-        <input id="submit" type="submit" name="login" value="sign in" style=" cursor: pointer;" /> -->
-<!--module xsrf_form_html() 已使用ajax替代-->
-<!--  -->
-<!--     </form>
-</div>
- -->
-<div class="container" id="login_outer">
-    <form class="form-signin" id="login_form" action="" method="post" autocomplete="on">
-        <label for="email" class="sr-only">Email</label>
-        <input type="email" id="email" name="email" class="form-control" placeholder="Email" required autofocus pattern="[\w]+[@][A-z0-9]+\.[A-z]+">  
-        <label for="password" class="sr-only">Password</label>
-        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
-        <button id="submit" class="btn  btn-success btn-block" type="submit">
-        <i class="icon-ok-sign icon-large"></i>  Sign in</button>
-    </form>
-</div>
-{% end %}
-
-{% block bottom %}
-<script type="text/javascript" src="{{ static_url("js/sha1.js") }}"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#login_form").submit(function() {
-        var mypassword = $("#password").val();
-        var sha1obj = new jsSHA(mypassword, "TEXT");
-        var sha1password = sha1obj.getHash("SHA-1", "HEX");
-        function getCookie(name) {
-            var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
-            return r ? r[1] : undefined;
+{% extends "base.html" %}
+    {% block head %}
+        <style type="text/css">
+        body {
+            /* padding-top: 40px;*/
+            padding-bottom: 40px;
+            background-color: #eee;
         }
-        var args = {
-            "_xsrf": getCookie("_xsrf"),
-            "email": $("#email").val(),
-            "password": sha1password
-        };
-        $("#submit").attr("disabled", true).css("background", "#C8C6C6");
-        $("#login_form #alert").hide(1000);
 
-        $.post(
-            "/login",
-            $.param(args),
-            function(msg) {
-                if ("ok" == msg) {
-                    window.location.href = "/";
-                } else {
-                    $("#login_form").append('<div id="alert" class="alert alert-danger"' +
-                        'role="alert"><strong>Oh! </strong>' +
-                        'Incorrect email or password..</div>').css("color", "#C8C6C6");
-                    $("#submit").attr("disabled", false).css("background", "#337AB7");
+        .form-signin {
+            max-width: 330px;
+            padding: 15px;
+            margin: 0 auto;
+        }
+
+
+        /*.form-signin .form-signin-heading,
+        .form-signin .checkbox {
+          margin-bottom: 10px;
+        }*/
+
+
+        /*.form-signin .checkbox {
+          font-weight: normal;
+        }*/
+
+        .form-signin .form-control {
+            position: relative;
+            height: auto;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .form-signin .form-control:focus {
+            z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+        </style>
+    {% end %} 
+    {% block body %}
+
+        <!-- <div id="login_outer">
+            <form id="login_form" action="" method="post" autocomplete="on">
+                <input id="email" type="email" name="email" required="required" pattern="[\w]+[@][A-z0-9]+\.[A-z]+" placeholder="Email" />
+                <br />
+                <input id="password" type="password" name="password" required="required" placeholder="Password" />
+                <br />
+                <input id="submit" type="submit" name="login" value="sign in" style=" cursor: pointer;" /> -->
+        <!--module xsrf_form_html() 已使用ajax替代-->
+        <!--  -->
+        <!--     </form>
+        </div>
+         -->
+        <div class="container" id="login_outer">
+            <form class="form-signin" id="login_form" action="" method="post" autocomplete="on">
+                <label for="email" class="sr-only">Email</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Email" required autofocus pattern="[\w]+[@][A-z0-9]+\.[A-z]+">  
+                <label for="password" class="sr-only">Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="remember-me"> Remember me
+                    </label>
+                </div>
+                <button id="submit" class="btn  btn-success btn-block" type="submit">
+                <i class="icon-ok-sign icon-large"></i>  Sign in</button>
+            </form>
+        </div>
+    {% end %}
+
+    {% block bottom %}
+        <script type="text/javascript" src="{{ static_url("js/sha1.js") }}"></script>
+        <script type="text/javascript">
+        $(document).ready(function() {
+            $("#login_form").submit(function() {
+                var mypassword = $("#password").val();
+                var sha1obj = new jsSHA(mypassword, "TEXT");
+                var sha1password = sha1obj.getHash("SHA-1", "HEX");
+                function getCookie(name) {
+                    var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+                    return r ? r[1] : undefined;
                 }
-            }
-        );
-        return false;
-    });
-})
-</script>
-{% end %}
+                var args = {
+                    "_xsrf": getCookie("_xsrf"),
+                    "email": $("#email").val(),
+                    "password": sha1password
+                };
+                $("#submit").attr("disabled", true).css("background", "#C8C6C6");
+                $("#login_form #alert").hide(1000);
+
+                $.post(
+                    "/login",
+                    $.param(args),
+                    function(msg) {
+                        if ("ok" == msg) {
+                            window.location.href = "/";
+                        } else {
+                            $("#login_form").append('<div id="alert" class="alert alert-danger"' +
+                                'role="alert"><strong>Oh! </strong>' +
+                                'Incorrect email or password..</div>').css("color", "#C8C6C6");
+                            $("#submit").attr("disabled", false).css("background", "#337AB7");
+                        }
+                    }
+                );
+                return false;
+            });
+        })
+        </script>
+    {% end %}
