@@ -79,7 +79,7 @@ class HomeHandler(BaseHandler):
         if not articles:
             self.redirect("/compose")
             return
-        self.render("home.html", articles=articles, sumPage=sumPage)
+        self.render("home.html", articles=articles, sumPage=sumPage, onPage=1)
 
 
 class EntryModule(tornado.web.UIModule):
@@ -121,27 +121,24 @@ class AsideJsonHandler(BaseHandler):
 
 class PageHandler(BaseHandler):
 
-    def get(self):
-        try:
-            page = self.get_argument("page", 1)
-            if int(page) > 0:
-                page_start = int(page) * sp - sp
-                articles = self.db.query(
-                    "SELECT * FROM posts ORDER BY id "
-                    "DESC LIMIT %s,%s" % (page_start, sp)
-                )
-                count_items = self.db.get("SELECT count(*) FROM posts")
-                if count_items["count(*)"] % sp == 0:
-                    sumPage = count_items["count(*)"] / sp
-                else:
-                    sumPage = count_items["count(*)"] / sp + 1
-                if not articles:
-                    raise tornado.web.HTTPError(404)
-                self.render("home.html", articles=articles, sumPage=sumPage)
+    def get(self, page):
+        page = int(page)
+        if page > 0:
+            page_start = page * sp - sp
+            articles = self.db.query(
+                "SELECT * FROM posts ORDER BY id "
+                "DESC LIMIT %s,%s" % (page_start, sp)
+            )
+            count_items = self.db.get("SELECT count(*) FROM posts")
+            if count_items["count(*)"] % sp == 0:
+                sumPage = count_items["count(*)"] / sp
             else:
-                self.redirect("/")
-        except ValueError:
-            self.write("NO PAGE FOUND")
+                sumPage = count_items["count(*)"] / sp + 1
+            if not articles:
+                raise tornado.web.HTTPError(404)
+            self.render("home.html", articles=articles, sumPage=sumPage, onPage=page)
+        else:
+            raise tornado.web.HTTPError(404)
 
 
 class PageJsonHandler(BaseHandler):
@@ -210,14 +207,25 @@ class ComposeHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         entry_id = self.get_argument("id", None)
-        article = None
-        if entry_id:
-            article = self.db.get(
-                "SELECT * FROM posts LEFT JOIN tags ON "
-                "article_tag_id = tag_id WHERE id = %s", entry_id
-            )
+        
+        if entry_id is not None:
+            try:
+                entry_id = int(entry_id)
+            except Exception:
+                raise tornado.web.HTTPError(404)
+
+            if entry_id > 0:
+                article = self.db.get(
+                    "SELECT * FROM posts LEFT JOIN tags ON "
+                    "article_tag_id = tag_id WHERE id = %s", entry_id
+                )
+                if article:
+                    tags = self.db.query("SELECT * FROM tags")                
+                    self.render("compose.html", article=article, tags=tags)
+                    return
+            raise tornado.web.HTTPError(404)
         tags = self.db.query("SELECT * FROM tags")
-        self.render("compose.html", article=article, tags=tags)
+        self.render("compose.html", article=None, tags=tags)
 
     @tornado.web.authenticated
     def post(self):

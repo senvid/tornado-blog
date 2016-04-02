@@ -13,8 +13,6 @@
                 {% end %}
             </section>
             <hr />
-            <!-- paging -->
-            <input id="sumPage" type="hidden" value={{ sumPage }} />
             <nav>
                 <ul id="paging" class="pagination">
                 </ul>
@@ -31,9 +29,9 @@
     <script type="text/javascript">
         $(document).ready(function() {
             hljs.initHighlightingOnLoad();
-            var onPage = geturlargs();
-            if (!onPage) onPage = 1;
-            var sumPage = parseInt($("#sumPage").val());
+            // var onPage = geturlargs();
+            var onPage = parseInt({{ onPage }});
+            var sumPage = parseInt({{ sumPage }});
             paging(onPage,sumPage);
         });
         </script>
