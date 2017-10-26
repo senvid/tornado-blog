@@ -1,5 +1,8 @@
 body {
     background-color: #F8F8FB;
+    font: 16px/1.6em "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-webkit-webkit-text-size-adjust: 100%;
+    font-weight: 300;
 }
 
 #nav-head {
@@ -102,11 +105,21 @@ section.inner {
 
 /* Aside */
 
-#tag_a a {
-    display: block;
-    margin-bottom: 10px;
+
+.title-list, .aside-title, .tag-list-count, .tag-type-count {
+    padding-left: 0px;
+    padding-bottom: 5px;
+
 }
 
+.title-list, .tag-list-count {
+    list-style: none;
+    margin: 0;
+}
+
+.tag-type-count {
+    color: #999;
+}
 
 /*----------------------------*/
 

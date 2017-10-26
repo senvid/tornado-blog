@@ -14,15 +14,18 @@
         </h3>
     </div>
     <div class="panel-body">
+        <ul class="title-list">
         {% for item in aside_title %}
         <li>
             <a href="/topic/{{ item.slug }}">
-                <p>{{ item.title }}</p>
+                <span class="aside-title">{{ item.title }}</span>
             </a>
         </li>
         {% end %}
+        </ul>
     </div>
 </div>
+
 <div class="panel panel-danger">
     <div class="panel-heading">
     <h3 class="panel-title">
@@ -30,8 +33,16 @@
     </h3>
     </div>
     <div id="tag_a" class="panel-body list-group">
-        {% for tag in getAllTags %}
-        <a href="/tag/{{ tag.tag_type }}">{{ tag.tag_type }} [{{ tag["COUNT(id)"] }}]</a>
-        {% end %}
+
+        <ul class="tag-list-count">
+            {% for tag in getAllTags %}
+            <li>
+                <a href="/tag/{{ tag.tag_type }}">{{ tag.tag_type }}</a>
+                <span class="tag-type-count">
+                    ({{ tag["COUNT(id)"] }})
+                </span>
+            </li>
+            {% end %}
+        </ul>        
     </div>
 </div>
