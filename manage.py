@@ -21,7 +21,7 @@ if __name__ == "__main__":
     loop = tornado.ioloop.IOLoop.instance()
     tornado.autoreload.add_reload_hook(config.pool.closeAll)
     # 新版本已自动开启
-    tornado.autoreload.start(loop, 1000)
+    # tornado.autoreload.start(loop, 1000)
     start_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     logging.info('************  server start at %s ************' % start_time)
     loop.start()
