@@ -116,6 +116,7 @@ class AsideJsonHandler(BaseHandler):
         aside_title = self.db.query(
             "SELECT title,slug FROM posts ORDER BY id DESC LIMIT 5"
         )
+        self.set_header("Content-Type", "application/atom+xml")
         self.write(json.dumps(aside_title))
 
 
@@ -153,6 +154,7 @@ class PageJsonHandler(BaseHandler):
             )
             if not articles:
                 raise tornado.web.HTTPError(404)
+            self.set_header("Content-Type", "application/atom+xml")
             self.write(json.dumps(articles, cls=Tojson))
 
 
