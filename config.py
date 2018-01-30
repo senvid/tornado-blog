@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from tornado.options import define, options
-import tinypool
+from utils import tinypool
 
 
 define("port", default=8000, help="run on the given port", type=int)

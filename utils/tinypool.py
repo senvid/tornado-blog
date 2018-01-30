@@ -25,7 +25,7 @@ import torndb
 
 # set log file
 import tinylog
-log = tinylog.LogHandler("dbPool.log", logName="db", level="debug")
+log = tinylog.LogHandler("../data/dbPool.log", logName="db", level="debug")
 
 # use logging not tinylog
 if not hasattr(log, "info"):
